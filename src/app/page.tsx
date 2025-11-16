@@ -21,7 +21,7 @@ export default function Home() {
 
         {/* Title */}
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-          Smart Notes
+          StudyLens AI
         </h1>
 
         {/* Description */}
@@ -33,7 +33,7 @@ export default function Home() {
         {/* CTA Button */}
         <div className="pt-4">
           <Button asChild size="lg" className="text-lg px-8 py-3">
-            <Link href="/notes">Get Started</Link>
+            <Link href="/courses">Get Started</Link>
           </Button>
         </div>
 

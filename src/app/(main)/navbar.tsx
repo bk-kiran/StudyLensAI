@@ -9,7 +9,7 @@ export function Navbar() {
     <nav className="flex justify-center p-4 bg-card border-b">
       <div className="container xl:max-w-6xl flex items-center mx-auto justify-between">
         <Link
-          href="/notes"
+          href="/courses"
           className="flex items-center gap-3 text-xl font-semibold text-card-foreground hover:opacity-80 transition-opacity"
         >
           <Image
@@ -19,7 +19,7 @@ export function Navbar() {
             height={32}
             className="rounded"
           />
-          Smart Notes
+          Courses
         </Link>
         <div className="flex items-center gap-2">
           <ModeToggle />
