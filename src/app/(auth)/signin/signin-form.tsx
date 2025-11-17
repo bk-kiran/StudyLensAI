@@ -15,18 +15,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthFormValues, signinSchema } from "../schema";
-import {useAuthActions} from "@convex-dev/auth/react"
+import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
-import { v } from "convex/values";
 import { toast } from "sonner";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
 export function SigninForm() {
   const [step, setStep] = useState<"signIn" | "signUp">("signIn");
 
-  const {signIn} = useAuthActions();
+  const { signIn } = useAuthActions();
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+  
+  // Add email verification mutation
+  const createVerificationCode = useMutation(api.emailVerification.createVerificationCode);
 
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(signinSchema),
@@ -37,31 +41,48 @@ export function SigninForm() {
   });
 
   async function onSubmit(values: AuthFormValues) {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      await signIn("password", {
-        ...values,
-        flow: step,
-      });
-      toast.success(
-        step === "signIn" ? "Successfully signed in!" : "Account created successfully!"
-      )
-      router.push("/courses");
+      if (step === "signUp") {
+        // Sign up flow
+        await signIn("password", {
+          ...values,
+          flow: "signUp",
+        });
+        
+        await createVerificationCode({ email: values.email });
+        toast.success("Account created! Please verify your email.");
+        router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
+        
+      } else {
+        // Sign in flow - just try to sign in
+        // (We'll add verification enforcement later if needed)
+        await signIn("password", {
+          ...values,
+          flow: "signIn",
+        });
+        
+        toast.success("Successfully signed in!");
+        router.push("/courses");
+      }
     } catch (error: any) {
-      if (error instanceof Error && 
-        (error.message.includes("InvalidAccountId") || error.message.includes("InvalidSecret"))
+      if (
+        error instanceof Error &&
+        (error.message.includes("InvalidAccountId") ||
+          error.message.includes("InvalidSecret"))
       ) {
         form.setError("root", {
           type: "manual",
-          message: "Invalid credientials. Please try again.",
-        })
+          message: "Invalid credentials. Please try again.",
+        });
       } else {
-        toast.error("An unexpected error occurred. Please try again.")
+        toast.error("An unexpected error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);
     }
   }
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50">
@@ -114,7 +135,7 @@ export function SigninForm() {
               </div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {step === "signIn" ? "Sign In" : "Sign Up"}
+              {isLoading ? "Loading..." : step === "signIn" ? "Sign In" : "Sign Up"}
             </Button>
           </form>
         </Form>

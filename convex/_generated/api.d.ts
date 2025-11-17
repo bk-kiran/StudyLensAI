@@ -15,8 +15,10 @@ import type {
 } from "convex/server";
 import type * as auth from "../auth.js";
 import type * as courses from "../courses.js";
+import type * as emailVerification from "../emailVerification.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
+import type * as sendEmail from "../sendEmail.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -29,8 +31,10 @@ import type * as http from "../http.js";
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   courses: typeof courses;
+  emailVerification: typeof emailVerification;
   files: typeof files;
   http: typeof http;
+  sendEmail: typeof sendEmail;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

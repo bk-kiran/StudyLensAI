@@ -11,6 +11,8 @@ import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ConfirmDialog } from "@/components/confirm-dialog";
+import { Pencil } from "lucide-react";
+import { EditCourseDialog } from "./edit-course-dialog";
 
 interface CoursesListProps {
   onSelectCourse: (course: Course) => void;
@@ -23,6 +25,8 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
 
   const handleDeleteClick = (courseId: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,6 +51,13 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
       setCourseToDelete(null);
     }
   };
+
+  const handleEditClick = (course: Course, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCourseToEdit(course);
+    setEditDialogOpen(true);
+  };
+
 
   if (courses === undefined) {
     return <LoadingSkeleton />;
@@ -79,15 +90,25 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
               <CardHeader>
                 <CardTitle className="flex items-start justify-between">
                   <span className="flex-1">{course.name}</span>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 -mt-1"
-                    onClick={(e) => handleDeleteClick(course._id, e)}
-                    disabled={deletingId === course._id}
-                  >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 -mt-1"
+                      onClick={(e) => handleEditClick(course as Course, e)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 -mt-1"
+                      onClick={(e) => handleDeleteClick(course._id, e)}
+                      disabled={deletingId === course._id}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -121,9 +142,17 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
         cancelText="Cancel"
         destructive={true}
       />
+
+      <EditCourseDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        course={courseToEdit}
+      />
     </div>
   );
 }
+
+
 
 function LoadingSkeleton() {
   return (

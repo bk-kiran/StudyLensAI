@@ -77,3 +77,25 @@ export const deleteCourse = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const updateCourse = mutation({
+  args: {
+    id: v.id("courses"),
+    name: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Unauthorized");
+
+    const course = await ctx.db.get(args.id);
+    if (!course || course.userId !== userId) {
+      throw new Error("Course not found or unauthorized");
+    }
+
+    await ctx.db.patch(args.id, {
+      name: args.name,
+      description: args.description,
+    });
+  },
+});
