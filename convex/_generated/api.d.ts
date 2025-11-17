@@ -18,6 +18,7 @@ import type * as courses from "../courses.js";
 import type * as emailVerification from "../emailVerification.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
+import type * as passwordReset from "../passwordReset.js";
 import type * as pendingAuth from "../pendingAuth.js";
 import type * as sendEmail from "../sendEmail.js";
 
@@ -35,6 +36,7 @@ declare const fullApi: ApiFromModules<{
   emailVerification: typeof emailVerification;
   files: typeof files;
   http: typeof http;
+  passwordReset: typeof passwordReset;
   pendingAuth: typeof pendingAuth;
   sendEmail: typeof sendEmail;
 }>;

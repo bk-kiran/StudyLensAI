@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
+import Link from "next/link";
 
 export function SigninForm() {
   const [step, setStep] = useState<"signIn" | "signUp">("signIn");
@@ -130,12 +131,23 @@ export function SigninForm() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>Password</FormLabel>
+                    {step === "signIn" && (
+                      <Link 
+                        href="/forgot-password" 
+                        className="text-xs text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </Link>
+                    )}
+                  </div>
                   <FormControl>
                     <PasswordInput placeholder="Password" {...field} />
                   </FormControl>

@@ -22,6 +22,15 @@ const schema = defineSchema({
         attempts: v.number(), // Track failed attempts
   }).index("by_email", ["email"]),
 
+    passwordResets: defineTable({
+        email: v.string(),
+        code: v.string(),
+        expiresAt: v.number(),
+        verified: v.boolean(),
+        attempts: v.number(),
+        oldPasswordHash: v.optional(v.string()), // For comparison
+    }).index("by_email", ["email"]),
+
     courses: defineTable({
         userId: v.id("users"),
         name: v.string(),
