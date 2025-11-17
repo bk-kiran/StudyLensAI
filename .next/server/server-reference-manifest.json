@@ -26,10 +26,6 @@
           "moduleId": "[project]/.next-internal/server/app/(main)/courses/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
         },
-        "app/_not-found/page": {
-          "moduleId": "[project]/.next-internal/server/app/_not-found/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/page": {
           "moduleId": "[project]/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -42,7 +38,6 @@
         "app/(auth)/signin/page": "action-browser",
         "app/(auth)/verify-email/page": "action-browser",
         "app/(main)/courses/page": "action-browser",
-        "app/_not-found/page": "action-browser",
         "app/page": "action-browser"
       }
     }

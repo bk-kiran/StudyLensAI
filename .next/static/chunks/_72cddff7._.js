@@ -195,9 +195,10 @@ function CompleteResetPage() {
     const email = searchParams.get("email");
     const password = searchParams.get("password");
     const [status, setStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("checking");
-    const { signIn } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthActions"])();
+    const { signIn, signOut } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthActions"])();
     const checkPending = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].passwordResetMutations.completePendingReset);
-    const clearPending = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].passwordResetMutations.clearPendingReset);
+    const updatePassword = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAction"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].passwordReset.updatePasswordForExistingUser);
+    const transferAccount = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAction"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].passwordReset.transferAuthAccountAfterSignUp);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CompleteResetPage.useEffect": ()=>{
             if (!email || !password) {
@@ -218,16 +219,71 @@ function CompleteResetPage() {
                             return;
                         }
                         setStatus("creating");
-                        // Now create the auth with sign-up
-                        await signIn("password", {
+                        // Update password - this will either update existing authAccount or prepare for transfer
+                        const updateResult = await updatePassword({
                             email: email,
-                            password: password,
-                            flow: "signUp"
+                            newPassword: password
                         });
-                        // Clear the pending reset
-                        await clearPending({
-                            email
-                        });
+                        const existingUserId = updateResult.userId;
+                        // If we updated an existing authAccount, just sign in
+                        if (updateResult.updatedExisting) {
+                            console.log("AuthAccount already exists, signing in directly");
+                            // Sign in with the updated password
+                            await signIn("password", {
+                                email: email,
+                                password: password,
+                                flow: "signIn"
+                            });
+                        } else {
+                            // No existing authAccount - need to create one via signUp and transfer
+                            console.log("No existing authAccount, creating via signUp and transferring");
+                            // Use signUp to create authAccount with correct format (creates new user temporarily)
+                            await signIn("password", {
+                                email: email,
+                                password: password,
+                                flow: "signUp"
+                            });
+                            // Wait for auth to complete
+                            await new Promise({
+                                "CompleteResetPage.useEffect.completeReset": (resolve)=>setTimeout(resolve, 1500)
+                            }["CompleteResetPage.useEffect.completeReset"]);
+                            // Now transfer the authAccount from the new user to the existing user
+                            setStatus("transferring");
+                            const transferResult = await transferAccount({
+                                email: email,
+                                existingUserId: existingUserId
+                            });
+                            console.log("Transfer result:", transferResult);
+                            // Verify transfer worked - check that authAccount exists for existing user
+                            console.log("Verifying transfer completed for user:", existingUserId);
+                            // Sign out to clear the session for the deleted new user
+                            await signOut();
+                            // Wait a bit for sign out to complete
+                            await new Promise({
+                                "CompleteResetPage.useEffect.completeReset": (resolve)=>setTimeout(resolve, 1500)
+                            }["CompleteResetPage.useEffect.completeReset"]);
+                            // Sign in again with the existing user (now the authAccount is linked to existing user)
+                            // Use signIn (not signUp) since the account now exists for the existing user
+                            try {
+                                await signIn("password", {
+                                    email: email,
+                                    password: password,
+                                    flow: "signIn"
+                                });
+                            } catch (signInError) {
+                                console.error("Sign in error after transfer:", signInError);
+                                // If signIn fails, the authAccount might not be properly linked
+                                // Try one more time after a delay
+                                await new Promise({
+                                    "CompleteResetPage.useEffect.completeReset": (resolve)=>setTimeout(resolve, 1000)
+                                }["CompleteResetPage.useEffect.completeReset"]);
+                                await signIn("password", {
+                                    email: email,
+                                    password: password,
+                                    flow: "signIn"
+                                });
+                            }
+                        }
                         setStatus("done");
                         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Password reset successfully!");
                         setTimeout({
@@ -237,43 +293,13 @@ function CompleteResetPage() {
                         }["CompleteResetPage.useEffect.completeReset"], 1000);
                     } catch (error) {
                         console.error("Complete reset error:", error);
-                        // If account exists, auth was created, clear pending and sign in
-                        if (error.message?.includes("already exists") || error.message?.includes("Account")) {
-                            try {
-                                await clearPending({
-                                    email
-                                });
-                                await signIn("password", {
-                                    email: email,
-                                    password: password,
-                                    flow: "signIn"
-                                });
-                                setStatus("done");
-                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Password reset successfully!");
-                                setTimeout({
-                                    "CompleteResetPage.useEffect.completeReset": ()=>{
-                                        router.push("/courses");
-                                    }
-                                }["CompleteResetPage.useEffect.completeReset"], 1000);
-                            } catch (signInError) {
-                                console.error("Sign in error:", signInError);
-                                setStatus("error");
-                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Please sign in manually with your new password.");
-                                setTimeout({
-                                    "CompleteResetPage.useEffect.completeReset": ()=>{
-                                        router.push(`/signin?email=${encodeURIComponent(email)}`);
-                                    }
-                                }["CompleteResetPage.useEffect.completeReset"], 2000);
+                        setStatus("error");
+                        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(error.message || "Failed to complete reset");
+                        setTimeout({
+                            "CompleteResetPage.useEffect.completeReset": ()=>{
+                                router.push("/forgot-password");
                             }
-                        } else {
-                            setStatus("error");
-                            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(error.message || "Failed to complete reset");
-                            setTimeout({
-                                "CompleteResetPage.useEffect.completeReset": ()=>{
-                                    router.push("/forgot-password");
-                                }
-                            }["CompleteResetPage.useEffect.completeReset"], 2000);
-                        }
+                        }["CompleteResetPage.useEffect.completeReset"], 2000);
                     }
                 }
             }["CompleteResetPage.useEffect.completeReset"];
@@ -285,7 +311,7 @@ function CompleteResetPage() {
         router,
         signIn,
         checkPending,
-        clearPending
+        updatePassword
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "flex items-center justify-center min-h-screen bg-muted/50",
@@ -298,25 +324,26 @@ function CompleteResetPage() {
                             children: "Completing Password Reset"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-                            lineNumber: 107,
+                            lineNumber: 140,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                             children: [
                                 status === "checking" && "Verifying reset request...",
                                 status === "creating" && "Creating your new password...",
+                                status === "transferring" && "Linking to your account...",
                                 status === "done" && "Success! Redirecting...",
                                 status === "error" && "Something went wrong..."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-                            lineNumber: 108,
+                            lineNumber: 141,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-                    lineNumber: 106,
+                    lineNumber: 139,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -325,33 +352,34 @@ function CompleteResetPage() {
                         className: "h-12 w-12 animate-spin text-primary"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-                        lineNumber: 116,
+                        lineNumber: 150,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-                    lineNumber: 115,
+                    lineNumber: 149,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-            lineNumber: 105,
+            lineNumber: 138,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(auth)/complete-reset/page.tsx",
-        lineNumber: 104,
+        lineNumber: 137,
         columnNumber: 5
     }, this);
 }
-_s(CompleteResetPage, "JUBO1NSxLgUGiNTEQFfMwdHCPeI=", false, function() {
+_s(CompleteResetPage, "udI/4EjHazhozWsCR7lxJhLrYPU=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSearchParams"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuthActions"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"],
-        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"]
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAction"],
+        __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAction"]
     ];
 });
 _c = CompleteResetPage;
