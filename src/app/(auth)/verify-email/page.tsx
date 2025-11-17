@@ -9,6 +9,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function VerifyEmailPage() {
   const router = useRouter();
@@ -19,12 +20,13 @@ export default function VerifyEmailPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
 
-  const verifyCode = useMutation(api.emailVerification.verifyCode);
-  const resendCode = useMutation(api.emailVerification.resendVerificationCode);
+  const { signIn } = useAuthActions();
+  const verifyAndCreateAccount = useMutation(api.pendingAuth.verifyAndCreateAccount);
+  const createPendingUser = useMutation(api.pendingAuth.createPendingUser);
 
   useEffect(() => {
     if (!email) {
-      router.push("/sign-up");
+      router.push("/signin");
     }
   }, [email, router]);
 
@@ -34,9 +36,18 @@ export default function VerifyEmailPage() {
 
     setIsVerifying(true);
     try {
-      await verifyCode({ email, code });
-      toast.success("Email verified successfully!");
-      router.push("/sign-in");
+      // Verify code and get credentials
+      const result = await verifyAndCreateAccount({ email, code });
+      
+      // Now create the actual account
+      await signIn("password", {
+        email: result.email,
+        password: result.password,
+        flow: "signUp",
+      });
+      
+      toast.success("Email verified! Account created successfully!");
+      router.push("/courses");
     } catch (error: any) {
       toast.error(error.message || "Invalid verification code");
     } finally {
@@ -49,8 +60,9 @@ export default function VerifyEmailPage() {
 
     setIsResending(true);
     try {
-      await resendCode({ email });
-      toast.success("Verification code sent!");
+      // This would need the password - better to store it in state or session
+      toast.info("Please register again to get a new code");
+      router.push("/signin");
     } catch (error: any) {
       toast.error(error.message || "Failed to resend code");
     } finally {
@@ -61,7 +73,7 @@ export default function VerifyEmailPage() {
   if (!email) return null;
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-muted/50">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Verify Your Email</CardTitle>
@@ -101,19 +113,8 @@ export default function VerifyEmailPage() {
               )}
             </Button>
 
-            <div className="text-center">
-              <Button
-                type="button"
-                variant="link"
-                onClick={handleResend}
-                disabled={isResending}
-              >
-                {isResending ? "Sending..." : "Resend Code"}
-              </Button>
-            </div>
-
             <p className="text-xs text-muted-foreground text-center">
-              The code will expire in 10 minutes
+              The code will expire in 10 minutes. Check your console for the code in development mode.
             </p>
           </form>
         </CardContent>

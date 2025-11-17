@@ -18,6 +18,7 @@ import type * as courses from "../courses.js";
 import type * as emailVerification from "../emailVerification.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
+import type * as pendingAuth from "../pendingAuth.js";
 import type * as sendEmail from "../sendEmail.js";
 
 /**
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   emailVerification: typeof emailVerification;
   files: typeof files;
   http: typeof http;
+  pendingAuth: typeof pendingAuth;
   sendEmail: typeof sendEmail;
 }>;
 export declare const api: FilterApi<

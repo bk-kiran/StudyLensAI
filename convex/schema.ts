@@ -5,6 +5,15 @@ import { v } from "convex/values";
 const schema = defineSchema({
     ...authTables,
 
+    pendingUsers: defineTable({
+    email: v.string(),
+        passwordHash: v.string(), // Store hashed password temporarily
+        code: v.string(),
+        expiresAt: v.number(),
+        verified: v.boolean(),
+        attempts: v.number(),
+  }).index("by_email", ["email"]),
+
     emailVerifications: defineTable({
         email: v.string(),
         code: v.string(),

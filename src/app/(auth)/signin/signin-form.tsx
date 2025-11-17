@@ -29,8 +29,8 @@ export function SigninForm() {
 
   const router = useRouter();
   
-  // Add email verification mutation
-  const createVerificationCode = useMutation(api.emailVerification.createVerificationCode);
+  // Use pending user creation instead
+  const createPendingUser = useMutation(api.pendingAuth.createPendingUser);
 
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(signinSchema),
@@ -44,19 +44,17 @@ export function SigninForm() {
     setIsLoading(true);
     try {
       if (step === "signUp") {
-        // Sign up flow
-        await signIn("password", {
-          ...values,
-          flow: "signUp",
+        // Don't create account yet - just create pending user
+        await createPendingUser({ 
+          email: values.email, 
+          password: values.password 
         });
         
-        await createVerificationCode({ email: values.email });
-        toast.success("Account created! Please verify your email.");
+        toast.success("Please verify your email to complete registration.");
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
         
       } else {
-        // Sign in flow - just try to sign in
-        // (We'll add verification enforcement later if needed)
+        // Sign in flow
         await signIn("password", {
           ...values,
           flow: "signIn",
@@ -66,6 +64,7 @@ export function SigninForm() {
         router.push("/courses");
       }
     } catch (error: any) {
+      console.error("Sign-in/up error:", error);
       if (
         error instanceof Error &&
         (error.message.includes("InvalidAccountId") ||
@@ -76,13 +75,12 @@ export function SigninForm() {
           message: "Invalid credentials. Please try again.",
         });
       } else {
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error(error.message || "An unexpected error occurred. Please try again.");
       }
     } finally {
       setIsLoading(false);
     }
   }
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50">
@@ -145,7 +143,7 @@ export function SigninForm() {
           className="w-full text-sm text-muted-foreground cursor-pointer"
           onClick={() => {
             setStep(step === "signIn" ? "signUp" : "signIn");
-            form.reset(); // Reset form errors and values when switching modes
+            form.reset();
           }}
         >
           {step === "signIn"
