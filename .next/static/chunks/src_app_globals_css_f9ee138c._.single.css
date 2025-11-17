@@ -335,6 +335,10 @@
     position: relative;
   }
 
+  .static {
+    position: static;
+  }
+
   .inset-0 {
     inset: calc(var(--spacing) * 0);
   }
@@ -513,6 +517,10 @@
 
   .inline-flex {
     display: inline-flex;
+  }
+
+  .table {
+    display: table;
   }
 
   .field-sizing-content {
@@ -1329,6 +1337,10 @@
 
   .slide-in-from-bottom-10 {
     --tw-enter-translate-y: calc(.1 * 100%);
+  }
+
+  .running {
+    animation-play-state: running;
   }
 
   .group-data-\[disabled\=true\]\:pointer-events-none:is(:where(.group)[data-disabled="true"] *) {
