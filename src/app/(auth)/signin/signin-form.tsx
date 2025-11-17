@@ -43,8 +43,13 @@ export function SigninForm() {
 
   async function onSubmit(values: AuthFormValues) {
     setIsLoading(true);
+    
+
+    
     try {
       if (step === "signUp") {
+  
+        
         await createPendingUser({ 
           email: values.email, 
           password: values.password 
@@ -54,19 +59,22 @@ export function SigninForm() {
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
         
       } else {
-        await signIn("password", {
-          ...values,
+        
+        const result = await signIn("password", {
+          email: values.email,
+          password: values.password,
           flow: "signIn",
         });
+        
         
         toast.success("Successfully signed in!");
         router.push("/courses");
       }
     } catch (error: any) {
-      console.error("Sign-in/up error:", error);
       
       // Handle specific error messages
       const errorMessage = error?.message || error?.toString() || "";
+      
       
       if (errorMessage.includes("An account with this email already exists")) {
         form.setError("email", {
@@ -75,14 +83,16 @@ export function SigninForm() {
         });
         toast.error("This email is already registered.");
       } else if (
-        error instanceof Error &&
-        (errorMessage.includes("InvalidAccountId") ||
-          errorMessage.includes("InvalidSecret"))
+        errorMessage.includes("InvalidAccountId") ||
+        errorMessage.includes("InvalidSecret") ||
+        errorMessage.includes("Account not found") ||
+        errorMessage.includes("Invalid")
       ) {
         form.setError("root", {
           type: "manual",
-          message: "Invalid credentials. Please try again.",
+          message: "Invalid email or password. Please try again.",
         });
+        toast.error("Invalid email or password.");
       } else if (errorMessage.includes("verify")) {
         toast.error("Please verify your email before signing in.");
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
@@ -98,6 +108,7 @@ export function SigninForm() {
       setIsLoading(false);
     }
   }
+
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50">

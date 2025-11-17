@@ -1,6 +1,9 @@
+"use node";
+
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
-import { api } from "./_generated/api";
+import { action, internalMutation, mutation } from "./_generated/server";
+import { api, internal } from "./_generated/api";
+import bcrypt from "bcryptjs";
 
 // Generate a 6-digit reset code
 function generateResetCode(): string {
@@ -101,10 +104,32 @@ export const verifyResetCode = mutation({
   },
 });
 
-export const completePasswordReset = mutation({
+// Action to hash password and call internal mutation
+export const completePasswordReset = action({
   args: {
     email: v.string(),
     code: v.string(),
+    newPassword: v.string(),
+  },
+  handler: async (ctx, args): Promise<{ success: boolean; email: string }> => {
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(args.newPassword, 10);
+    
+    // Call internal mutation to update password
+    return await ctx.runMutation(internal.passwordReset.updatePasswordInternal, {
+      email: args.email,
+      code: args.code,
+      hashedPassword: hashedPassword,
+    });
+  },
+});
+
+// Internal mutation to update password in database
+export const updatePasswordInternal = internalMutation({
+  args: {
+    email: v.string(),
+    code: v.string(),
+    hashedPassword: v.string(),
   },
   handler: async (ctx, args) => {
     // Verify the reset request is still valid and verified
@@ -146,15 +171,28 @@ export const completePasswordReset = mutation({
       )
       .first();
 
-    if (authAccount) {
-      // Delete the old password authentication
-      await ctx.db.delete(authAccount._id);
+    if (!authAccount) {
+      throw new Error("Password authentication not found");
     }
+
+    // Update the password hash in authAccounts
+    await ctx.db.patch(authAccount._id, {
+      secret: args.hashedPassword,
+    });
 
     // Delete the reset request
     await ctx.db.delete(resetRequest._id);
 
-    // Return success - user can now set new password via sign-up flow
+    // Invalidate all existing sessions (force re-login)
+    const sessions = await ctx.db
+      .query("authSessions")
+      .filter((q) => q.eq(q.field("userId"), user._id))
+      .collect();
+
+    for (const session of sessions) {
+      await ctx.db.delete(session._id);
+    }
+
     return { 
       success: true,
       email: args.email,

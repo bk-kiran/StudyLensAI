@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMutation } from "convex/react";
+import { useMutation, useAction } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -26,7 +26,7 @@ export default function ResetPasswordPage() {
 
   const { signIn } = useAuthActions();
   const verifyCode = useMutation(api.passwordReset.verifyResetCode);
-  const completeReset = useMutation(api.passwordReset.completePasswordReset);
+  const completeReset = useAction(api.passwordReset.completePasswordReset);
 
   useEffect(() => {
     if (!email) {
@@ -66,19 +66,24 @@ export default function ResetPasswordPage() {
 
     setIsResetting(true);
     try {
-      // Complete the reset (deletes old password auth)
-      await completeReset({ email, code });
+      // Complete the reset with new password
+      await completeReset({ 
+        email, 
+        code, 
+        newPassword: newPassword 
+      });
       
-      // Create new account with new password (will be hashed automatically)
+      // Sign in with new password
       await signIn("password", {
         email: email,
         password: newPassword,
-        flow: "signUp",
+        flow: "signIn",
       });
       
       toast.success("Password reset successfully!");
       router.push("/courses");
     } catch (error: any) {
+      console.error("Reset error:", error);
       toast.error(error.message || "Failed to reset password");
     } finally {
       setIsResetting(false);
@@ -133,7 +138,7 @@ export default function ResetPasswordPage() {
               </Button>
 
               <p className="text-xs text-muted-foreground text-center">
-                Check your console for the code in development mode.
+                Check your email for the code.
               </p>
             </form>
           ) : (
