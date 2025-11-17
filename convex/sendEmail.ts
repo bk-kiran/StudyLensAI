@@ -12,9 +12,11 @@ export const sendVerificationEmail = action({
     code: v.string(),
   },
   handler: async (ctx, args) => {
+    console.log("🔵 EMAIL ACTION TRIGGERED", args.email, args.code);
+    
     try {
-      await resend.emails.send({
-        from: 'StudyLensAI <onboarding@resend.dev>', // Use test domain
+      const result = await resend.emails.send({
+        from: 'StudyLensAI <noreply@kiranbk.com>',
         to: args.email,
         subject: 'Verify your email - StudyLensAI',
         html: `
@@ -33,7 +35,7 @@ export const sendVerificationEmail = action({
       console.log(`Verification email sent to ${args.email}`);
       return { success: true };
     } catch (error) {
-      console.error("Failed to send email:", error);
+      console.error("❌ SEND EMAIL ERROR:", error);
       throw new Error("Failed to send verification email");
     }
   },

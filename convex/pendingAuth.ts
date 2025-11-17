@@ -74,13 +74,15 @@ export const verifyAndCreateAccount = mutation({
       throw new Error("No pending registration found for this email");
     }
 
-    // Check if expired
+    // Check if expired - DELETE if expired
     if (Date.now() > pendingUser.expiresAt) {
-      throw new Error("Verification code has expired");
+      await ctx.db.delete(pendingUser._id);  // ← ADD THIS LINE
+      throw new Error("Verification code has expired. Please register again.");
     }
 
     // Check attempts
     if (pendingUser.attempts >= 5) {
+      await ctx.db.delete(pendingUser._id);  // ← ADD THIS LINE TOO
       throw new Error("Too many failed attempts. Please register again");
     }
 

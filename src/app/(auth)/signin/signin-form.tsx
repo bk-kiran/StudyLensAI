@@ -29,7 +29,6 @@ export function SigninForm() {
 
   const router = useRouter();
   
-  // Use pending user creation instead
   const createPendingUser = useMutation(api.pendingAuth.createPendingUser);
 
   const form = useForm<AuthFormValues>({
@@ -37,6 +36,7 @@ export function SigninForm() {
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -44,7 +44,6 @@ export function SigninForm() {
     setIsLoading(true);
     try {
       if (step === "signUp") {
-        // Don't create account yet - just create pending user
         await createPendingUser({ 
           email: values.email, 
           password: values.password 
@@ -54,7 +53,6 @@ export function SigninForm() {
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
         
       } else {
-        // Sign in flow
         await signIn("password", {
           ...values,
           flow: "signIn",
@@ -65,17 +63,35 @@ export function SigninForm() {
       }
     } catch (error: any) {
       console.error("Sign-in/up error:", error);
-      if (
+      
+      // Handle specific error messages
+      const errorMessage = error?.message || error?.toString() || "";
+      
+      if (errorMessage.includes("An account with this email already exists")) {
+        form.setError("email", {
+          type: "manual",
+          message: "This email is already registered. Please sign in instead.",
+        });
+        toast.error("This email is already registered.");
+      } else if (
         error instanceof Error &&
-        (error.message.includes("InvalidAccountId") ||
-          error.message.includes("InvalidSecret"))
+        (errorMessage.includes("InvalidAccountId") ||
+          errorMessage.includes("InvalidSecret"))
       ) {
         form.setError("root", {
           type: "manual",
           message: "Invalid credentials. Please try again.",
         });
+      } else if (errorMessage.includes("verify")) {
+        toast.error("Please verify your email before signing in.");
+        router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
       } else {
-        toast.error(error.message || "An unexpected error occurred. Please try again.");
+        // Generic error
+        form.setError("root", {
+          type: "manual",
+          message: errorMessage || "An unexpected error occurred. Please try again.",
+        });
+        toast.error(errorMessage || "An unexpected error occurred.");
       }
     } finally {
       setIsLoading(false);
@@ -127,6 +143,24 @@ export function SigninForm() {
                 </FormItem>
               )}
             />
+            
+            {/* Confirm Password - Only show during sign-up */}
+            {step === "signUp" && (
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput placeholder="Confirm Password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            
             {form.formState.errors.root && (
               <div className="text-sm text-destructive">
                 {form.formState.errors.root.message}

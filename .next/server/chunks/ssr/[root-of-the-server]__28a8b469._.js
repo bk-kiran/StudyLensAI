@@ -369,12 +369,20 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__ = __turbopack_context__.i("[project]/node_modules/zod/dist/esm/v3/external.js [app-ssr] (ecmascript) <export * as z>");
 ;
 const signinSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
-    email: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().email({
-        message: "Please enter a valid email address."
-    }),
-    password: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(8, {
-        message: "Password must be at least 8 characters long."
-    })
+    email: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().email("Invalid email address"),
+    password: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$dist$2f$esm$2f$v3$2f$external$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().optional()
+}).refine((data)=>{
+    // Only validate confirmPassword if it exists (sign-up mode)
+    if (data.confirmPassword !== undefined) {
+        return data.password === data.confirmPassword;
+    }
+    return true;
+}, {
+    message: "Passwords don't match",
+    path: [
+        "confirmPassword"
+    ]
 });
 }}),
 "[externals]/module [external] (module, cjs)": (function(__turbopack_context__) {
@@ -482,20 +490,19 @@ function SigninForm() {
     const { signIn } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuthActions"])();
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
-    // Use pending user creation instead
     const createPendingUser = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].pendingAuth.createPendingUser);
     const form = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$zod$2f$dist$2f$zod$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["zodResolver"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$auth$292f$schema$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["signinSchema"]),
         defaultValues: {
             email: "",
-            password: ""
+            password: "",
+            confirmPassword: ""
         }
     });
     async function onSubmit(values) {
         setIsLoading(true);
         try {
             if (step === "signUp") {
-                // Don't create account yet - just create pending user
                 await createPendingUser({
                     email: values.email,
                     password: values.password
@@ -503,7 +510,6 @@ function SigninForm() {
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success("Please verify your email to complete registration.");
                 router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
             } else {
-                // Sign in flow
                 await signIn("password", {
                     ...values,
                     flow: "signIn"
@@ -513,13 +519,29 @@ function SigninForm() {
             }
         } catch (error) {
             console.error("Sign-in/up error:", error);
-            if (error instanceof Error && (error.message.includes("InvalidAccountId") || error.message.includes("InvalidSecret"))) {
+            // Handle specific error messages
+            const errorMessage = error?.message || error?.toString() || "";
+            if (errorMessage.includes("An account with this email already exists")) {
+                form.setError("email", {
+                    type: "manual",
+                    message: "This email is already registered. Please sign in instead."
+                });
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("This email is already registered.");
+            } else if (error instanceof Error && (errorMessage.includes("InvalidAccountId") || errorMessage.includes("InvalidSecret"))) {
                 form.setError("root", {
                     type: "manual",
                     message: "Invalid credentials. Please try again."
                 });
+            } else if (errorMessage.includes("verify")) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error("Please verify your email before signing in.");
+                router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
             } else {
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(error.message || "An unexpected error occurred. Please try again.");
+                // Generic error
+                form.setError("root", {
+                    type: "manual",
+                    message: errorMessage || "An unexpected error occurred. Please try again."
+                });
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(errorMessage || "An unexpected error occurred.");
             }
         } finally{
             setIsLoading(false);
@@ -538,7 +560,7 @@ function SigninForm() {
                             children: step === "signIn" ? "Login" : "Create Account"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                            lineNumber: 89,
+                            lineNumber: 105,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -546,13 +568,13 @@ function SigninForm() {
                             children: step === "signIn" ? "Enter your credentials to access your account." : "Enter your details to create a new account."
                         }, void 0, false, {
                             fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                            lineNumber: 92,
+                            lineNumber: 108,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                    lineNumber: 88,
+                    lineNumber: 104,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Form"], {
@@ -570,7 +592,7 @@ function SigninForm() {
                                                 children: "Email"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 105,
+                                                lineNumber: 121,
                                                 columnNumber: 19
                                             }, void 0),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormControl"], {
@@ -580,28 +602,28 @@ function SigninForm() {
                                                     type: "email"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                    lineNumber: 107,
+                                                    lineNumber: 123,
                                                     columnNumber: 21
                                                 }, void 0)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 106,
+                                                lineNumber: 122,
                                                 columnNumber: 19
                                             }, void 0),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormMessage"], {}, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 113,
+                                                lineNumber: 129,
                                                 columnNumber: 19
                                             }, void 0)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                        lineNumber: 104,
+                                        lineNumber: 120,
                                         columnNumber: 17
                                     }, void 0)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                lineNumber: 100,
+                                lineNumber: 116,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
@@ -613,7 +635,7 @@ function SigninForm() {
                                                 children: "Password"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 122,
+                                                lineNumber: 138,
                                                 columnNumber: 19
                                             }, void 0),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormControl"], {
@@ -622,36 +644,78 @@ function SigninForm() {
                                                     ...field
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 140,
                                                     columnNumber: 21
                                                 }, void 0)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 139,
                                                 columnNumber: 19
                                             }, void 0),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormMessage"], {}, void 0, false, {
                                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                                lineNumber: 126,
+                                                lineNumber: 142,
                                                 columnNumber: 19
                                             }, void 0)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                        lineNumber: 121,
+                                        lineNumber: 137,
                                         columnNumber: 17
                                     }, void 0)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                lineNumber: 117,
+                                lineNumber: 133,
                                 columnNumber: 13
+                            }, this),
+                            step === "signUp" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormField"], {
+                                control: form.control,
+                                name: "confirmPassword",
+                                render: ({ field })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormItem"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormLabel"], {
+                                                children: "Confirm Password"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                                lineNumber: 154,
+                                                columnNumber: 21
+                                            }, void 0),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormControl"], {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$password$2d$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["PasswordInput"], {
+                                                    placeholder: "Confirm Password",
+                                                    ...field
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                                    lineNumber: 156,
+                                                    columnNumber: 23
+                                                }, void 0)
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                                lineNumber: 155,
+                                                columnNumber: 21
+                                            }, void 0),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$form$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["FormMessage"], {}, void 0, false, {
+                                                fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                                lineNumber: 158,
+                                                columnNumber: 21
+                                            }, void 0)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                        lineNumber: 153,
+                                        columnNumber: 19
+                                    }, void 0)
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
+                                lineNumber: 149,
+                                columnNumber: 15
                             }, this),
                             form.formState.errors.root && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "text-sm text-destructive",
                                 children: form.formState.errors.root.message
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                lineNumber: 131,
+                                lineNumber: 165,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -661,18 +725,18 @@ function SigninForm() {
                                 children: isLoading ? "Loading..." : step === "signIn" ? "Sign In" : "Sign Up"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                                lineNumber: 135,
+                                lineNumber: 169,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                        lineNumber: 99,
+                        lineNumber: 115,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                    lineNumber: 98,
+                    lineNumber: 114,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -686,18 +750,18 @@ function SigninForm() {
                     children: step === "signIn" ? "Don't have an account? Sign Up" : "Already have an account? Sign In"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-                    lineNumber: 140,
+                    lineNumber: 174,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-            lineNumber: 87,
+            lineNumber: 103,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(auth)/signin/signin-form.tsx",
-        lineNumber: 86,
+        lineNumber: 102,
         columnNumber: 5
     }, this);
 }
