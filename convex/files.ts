@@ -6,83 +6,77 @@ export const generateUploadUrl = mutation({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
-    
+
     return await ctx.storage.generateUploadUrl();
   },
 });
 
-export const saveDocument = mutation({
-  args: {
-    storageId: v.id("_storage"),
-    title: v.string(),
-    fileName: v.string(),
-    fileType: v.string(),
-    content: v.string(),
-    courseId: v.optional(v.string()),
-    tags: v.optional(v.array(v.string())),
-  },
+export const getFilesByCourse = query({
+  args: { courseId: v.id("courses") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 
-    const documentId = await ctx.db.insert("files", {
-      userId,
-      title: args.title,
-      fileName: args.fileName,
-      fileType: args.fileType,
-      storageId: args.storageId,
-      content: args.content,
-      uploadDate: Date.now(),
-      courseId: args.courseId,
-      tags: args.tags,
-    });
+    const files = await ctx.db
+      .query("files")
+      .withIndex("by_courseId", (q) => q.eq("courseId", args.courseId))
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .collect();
 
-    return documentId;
+    return files;
   },
 });
 
-export const getDocuments = query({
+export const saveFile = mutation({
   args: {
-    courseId: v.optional(v.string()),
+    courseId: v.id("courses"),
+    name: v.string(),
+    storageId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 
-    let documents;
-    if (args.courseId) {
-      documents = await ctx.db
-        .query("files")
-        .withIndex("by_course", (q) => 
-          q.eq("userId", userId).eq("courseId", args.courseId)
-        )
-        .collect();
-    } else {
-      documents = await ctx.db
-        .query("files")
-        .withIndex("by_userId", (q) => q.eq("userId", userId))
-        .collect();
+    // Verify the course belongs to the user
+    const course = await ctx.db.get(args.courseId);
+    if (!course || course.userId !== userId) {
+      throw new Error("Course not found or unauthorized");
     }
 
-    return documents;
+    const fileId = await ctx.db.insert("files", {
+      userId,
+      courseId: args.courseId,
+      name: args.name,
+      storageId: args.storageId,
+      uploadDate: Date.now(),
+    });
+
+    return fileId;
   },
 });
 
-export const deleteDocument = mutation({
+export const deleteFile = mutation({
   args: { id: v.id("files") },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
     if (!userId) throw new Error("Unauthorized");
 
-    const document = await ctx.db.get(args.id);
-    if (!document || document.userId !== userId) {
-      throw new Error("Document not found or unauthorized");
+    const file = await ctx.db.get(args.id);
+    if (!file || file.userId !== userId) {
+      throw new Error("File not found or unauthorized");
     }
 
-    // Delete the file from storage
-    await ctx.storage.delete(document.storageId);
-    
-    // Delete the document record
+    // Delete from storage
+    await ctx.storage.delete(file.storageId);
+
+    // Delete the file record
     await ctx.db.delete(args.id);
+  },
+});
+
+export const getFileUrl = query({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    return await ctx.storage.getUrl(args.storageId);
   },
 });

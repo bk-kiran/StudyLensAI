@@ -26,8 +26,7 @@ export default function Home() {
 
         {/* Description */}
         <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          A simple note-taking app with AI chatbot integration. Ask the chatbot
-          anything about your notes to retrieve and summarize that information.
+          StudyLens AI is an intelligent, all-in-one platform designed to help students organize their coursework, learn faster, and study more effectively using the power of AI.
         </p>
 
         {/* CTA Button */}
@@ -39,21 +38,14 @@ export default function Home() {
 
         {/* Built with section */}
         <div className="pt-8 text-sm text-muted-foreground">
-          <p>Built with Convex and the Vercel AI SDK</p>
+          <p>Powered by Convex, OpenAI and Vercel AI SDK</p>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="mt-auto pt-16 pb-8">
-        <div className="text-center">
-          <a
-            href="https://www.youtube.com/c/codinginflow"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Full tutorial on YouTube →
-          </a>
+        <div className="text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} StudyLens AI. All rights reserved.
         </div>
       </footer>
     </div>

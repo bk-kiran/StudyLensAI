@@ -12,26 +12,43 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { toast } from "sonner";
 
 interface CreateCourseDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateCourse: (name: string, description: string) => void;
 }
 
 export function CreateCourseDialog({
   open,
   onOpenChange,
-  onCreateCourse,
 }: CreateCourseDialogProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = () => {
-    if (name.trim()) {
-      onCreateCourse(name, description);
+  const createCourse = useMutation(api.courses.createCourse);
+
+  const handleSubmit = async () => {
+    if (!name.trim()) return;
+
+    setIsLoading(true);
+    try {
+      await createCourse({
+        name: name.trim(),
+        description: description.trim(),
+      });
+      toast.success("Course created successfully");
       setName("");
       setDescription("");
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Create course error:", error);
+      toast.error("Failed to create course");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -50,9 +67,10 @@ export function CreateCourseDialog({
               Course Name
             </label>
             <Input
-              placeholder="e.g., Computer Science 101"
+              placeholder="e.g., Computer Science 250"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              disabled={isLoading}
             />
           </div>
           <div>
@@ -64,15 +82,20 @@ export function CreateCourseDialog({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
+              disabled={isLoading}
             />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={!name.trim()}>
-            Create Course
+          <Button onClick={handleSubmit} disabled={!name.trim() || isLoading}>
+            {isLoading ? "Creating..." : "Create Course"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -4,31 +4,14 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Upload, FileText, Trash2, Bot } from "lucide-react";
-import { Course, CourseFile } from "./courses-page";
+import { Course } from "./courses-page";
 import { UploadFileDialog } from "./upload-file-dialog";
 import { CourseAIChatBox } from "./course-ai-chat-box";
-
-// Mock data - replace with actual data fetching
-const mockFiles: CourseFile[] = [
-  {
-    id: "1",
-    name: "Lecture_1_Introduction.pdf",
-    courseId: "1",
-    uploadDate: "2024-01-15",
-  },
-  {
-    id: "2",
-    name: "Practice_Exam_1.pdf",
-    courseId: "1",
-    uploadDate: "2024-01-20",
-  },
-  {
-    id: "3",
-    name: "Chapter_3_Notes.pdf",
-    courseId: "2",
-    uploadDate: "2024-01-18",
-  },
-];
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 interface CourseFilesViewProps {
   course: Course;
@@ -36,28 +19,44 @@ interface CourseFilesViewProps {
 }
 
 export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
-  const [files, setFiles] = useState<CourseFile[]>(
-    mockFiles.filter((f) => f.courseId === course.id)
-  );
+  const files = useQuery(api.files.getFilesByCourse, { courseId: course._id as any });
+  const deleteFile = useMutation(api.files.deleteFile);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
 
-  const handleUploadFile = (file: File) => {
-    const newFile: CourseFile = {
-      id: Date.now().toString(),
-      name: file.name,
-      courseId: course.id,
-      uploadDate: new Date().toISOString().split("T")[0],
-    };
-    setFiles([...files, newFile]);
-    setUploadDialogOpen(false);
+  const handleDeleteClick = (fileId: string) => {
+    setFileToDelete(fileId);
+    setConfirmDeleteOpen(true);
   };
 
-  const handleDeleteFile = (fileId: string) => {
-    if (confirm("Are you sure you want to delete this file?")) {
-      setFiles(files.filter((f) => f.id !== fileId));
+  const handleConfirmDelete = async () => {
+    if (!fileToDelete) return;
+
+    setDeletingId(fileToDelete);
+    setConfirmDeleteOpen(false);
+
+    try {
+      await deleteFile({ id: fileToDelete as any });
+      toast.success("File deleted successfully");
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete file");
+    } finally {
+      setDeletingId(null);
+      setFileToDelete(null);
     }
   };
+
+  const formatDate = (timestamp: number) => {
+    return new Date(timestamp).toLocaleDateString();
+  };
+
+  if (files === undefined) {
+    return <LoadingSkeleton onBack={onBack} course={course} />;
+  }
 
   return (
     <div className="container xl:max-w-6xl mx-auto">
@@ -94,7 +93,7 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {files.map((file) => (
-            <Card key={file.id} className="hover:shadow-md transition-shadow">
+            <Card key={file._id} className="hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="flex items-start gap-2">
                   <FileText className="h-5 w-5 mt-0.5 flex-shrink-0 text-primary" />
@@ -106,13 +105,14 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
               <CardContent>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground">
-                    Uploaded: {file.uploadDate}
+                    {formatDate(file.uploadDate)}
                   </span>
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleDeleteFile(file.id)}
+                    onClick={() => handleDeleteClick(file._id)}
                     className="h-8 w-8"
+                    disabled={deletingId === file._id}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
@@ -127,7 +127,7 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
         open={uploadDialogOpen}
         onOpenChange={setUploadDialogOpen}
         courseName={course.name}
-        onUploadFile={handleUploadFile}
+        courseId={course._id as any}
       />
 
       <CourseAIChatBox
@@ -135,6 +135,47 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
         onClose={() => setChatOpen(false)}
         courseName={course.name}
       />
+
+      <ConfirmDialog
+        open={confirmDeleteOpen}
+        onOpenChange={setConfirmDeleteOpen}
+        onConfirm={handleConfirmDelete}
+        title="Delete File"
+        description="Are you sure you want to delete this file? This action cannot be undone."
+        confirmText="Delete File"
+        cancelText="Cancel"
+        destructive={true}
+      />
+    </div>
+  );
+}
+
+function LoadingSkeleton({
+  onBack,
+  course,
+}: {
+  onBack: () => void;
+  course: Course;
+}) {
+  return (
+    <div className="container xl:max-w-6xl mx-auto">
+      <div className="mb-6">
+        <Button variant="ghost" onClick={onBack} className="mb-4">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Courses
+        </Button>
+        <div className="flex justify-between items-start">
+          <div>
+            <h1 className="text-2xl font-bold mb-2">{course.name}</h1>
+            <p className="text-muted-foreground">{course.description}</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-40 w-full rounded-xl" />
+        ))}
+      </div>
     </div>
   );
 }

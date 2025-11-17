@@ -3,19 +3,24 @@
 import { useState } from "react";
 import { CoursesList } from "./courses-list";
 import { CourseFilesView } from "./course-files-view";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 export type Course = {
-  id: string;
+  _id: Id<"courses">;
   name: string;
   description: string;
   fileCount: number;
+  userId: string;
+  createdAt: number;
 };
 
 export type CourseFile = {
-  id: string;
+  _id: Id<"files">;
   name: string;
-  courseId: string;
-  uploadDate: string;
+  courseId: Id<"courses">;
+  uploadDate: number;
+  userId: string;
+  storageId: Id<"_storage">;
 };
 
 export function CoursesPage() {

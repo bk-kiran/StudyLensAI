@@ -6,52 +6,51 @@ import { Button } from "@/components/ui/button";
 import { Plus, FileText, Trash2 } from "lucide-react";
 import { CreateCourseDialog } from "./create-course-dialog";
 import { Course } from "./courses-page";
-
-// Mock data - replace with actual data fetching
-const initialCourses: Course[] = [
-  {
-    id: "1",
-    name: "Computer Science 101",
-    description: "Introduction to Programming",
-    fileCount: 5,
-  },
-  {
-    id: "2",
-    name: "Mathematics 201",
-    description: "Calculus II",
-    fileCount: 3,
-  },
-];
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
+import { toast } from "sonner";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 
 interface CoursesListProps {
   onSelectCourse: (course: Course) => void;
 }
 
 export function CoursesList({ onSelectCourse }: CoursesListProps) {
-  const [courses, setCourses] = useState<Course[]>(initialCourses);
+  const courses = useQuery(api.courses.getCourses);
+  const deleteCourse = useMutation(api.courses.deleteCourse);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
 
-  const handleCreateCourse = (name: string, description: string) => {
-    const newCourse: Course = {
-      id: Date.now().toString(),
-      name,
-      description,
-      fileCount: 0,
-    };
-    setCourses([...courses, newCourse]);
-    setCreateDialogOpen(false);
+  const handleDeleteClick = (courseId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCourseToDelete(courseId);
+    setConfirmDeleteOpen(true);
   };
 
-  const handleDeleteCourse = (courseId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (
-      confirm(
-        "Are you sure you want to delete this course? All files will be removed."
-      )
-    ) {
-      setCourses(courses.filter((c) => c.id !== courseId));
+  const handleConfirmDelete = async () => {
+    if (!courseToDelete) return;
+
+    setDeletingId(courseToDelete);
+    setConfirmDeleteOpen(false);
+    
+    try {
+      await deleteCourse({ id: courseToDelete as any });
+      toast.success("Course deleted successfully");
+    } catch (error) {
+      console.error("Delete error:", error);
+      toast.error("Failed to delete course");
+    } finally {
+      setDeletingId(null);
+      setCourseToDelete(null);
     }
   };
+
+  if (courses === undefined) {
+    return <LoadingSkeleton />;
+  }
 
   return (
     <div className="container xl:max-w-6xl mx-auto">
@@ -73,9 +72,9 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {courses.map((course) => (
             <Card
-              key={course.id}
+              key={course._id}
               className="cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => onSelectCourse(course)}
+              onClick={() => onSelectCourse(course as Course)}
             >
               <CardHeader>
                 <CardTitle className="flex items-start justify-between">
@@ -84,7 +83,8 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 -mt-1"
-                    onClick={(e) => handleDeleteCourse(course.id, e)}
+                    onClick={(e) => handleDeleteClick(course._id, e)}
+                    disabled={deletingId === course._id}
                   >
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
@@ -109,8 +109,34 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
       <CreateCourseDialog
         open={createDialogOpen}
         onOpenChange={setCreateDialogOpen}
-        onCreateCourse={handleCreateCourse}
       />
+
+      <ConfirmDialog
+        open={confirmDeleteOpen}
+        onOpenChange={setConfirmDeleteOpen}
+        onConfirm={handleConfirmDelete}
+        title="Delete Course"
+        description="Are you sure you want to delete this course? All files will be permanently removed. This action cannot be undone."
+        confirmText="Delete Course"
+        cancelText="Cancel"
+        destructive={true}
+      />
+    </div>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="container xl:max-w-6xl mx-auto">
+      <div className="flex justify-between items-center mb-8">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-9 w-36" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {[...Array(6)].map((_, i) => (
+          <Skeleton key={i} className="h-40 w-full rounded-xl" />
+        ))}
+      </div>
     </div>
   );
 }
