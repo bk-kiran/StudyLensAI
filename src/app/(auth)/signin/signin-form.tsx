@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthFormValues, signinSchema } from "../schema";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -29,13 +29,15 @@ export function SigninForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const emailFromUrl = searchParams.get("email");
   
   const createPendingUser = useMutation(api.pendingAuth.createPendingUser);
 
   const form = useForm<AuthFormValues>({
     resolver: zodResolver(signinSchema),
     defaultValues: {
-      email: "",
+      email: emailFromUrl || "", // Pre-fill email from URL
       password: "",
       confirmPassword: "",
     },
@@ -44,11 +46,11 @@ export function SigninForm() {
   async function onSubmit(values: AuthFormValues) {
     setIsLoading(true);
     
-
+    console.log("🔵 Form submitted:", { step, email: values.email });
     
     try {
       if (step === "signUp") {
-  
+        console.log("🔵 Starting sign up...");
         
         await createPendingUser({ 
           email: values.email, 
@@ -59,6 +61,7 @@ export function SigninForm() {
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
         
       } else {
+        console.log("🔵 Starting sign in...");
         
         const result = await signIn("password", {
           email: values.email,
@@ -66,15 +69,17 @@ export function SigninForm() {
           flow: "signIn",
         });
         
+        console.log("✅ Sign in result:", result);
         
         toast.success("Successfully signed in!");
         router.push("/courses");
       }
     } catch (error: any) {
+      console.error("❌ Sign-in/up error:", error);
       
-      // Handle specific error messages
       const errorMessage = error?.message || error?.toString() || "";
       
+      console.log("Error message:", errorMessage);
       
       if (errorMessage.includes("An account with this email already exists")) {
         form.setError("email", {
@@ -97,7 +102,6 @@ export function SigninForm() {
         toast.error("Please verify your email before signing in.");
         router.push(`/verify-email?email=${encodeURIComponent(values.email)}`);
       } else {
-        // Generic error
         form.setError("root", {
           type: "manual",
           message: errorMessage || "An unexpected error occurred. Please try again.",
@@ -105,10 +109,10 @@ export function SigninForm() {
         toast.error(errorMessage || "An unexpected error occurred.");
       }
     } finally {
+      console.log("🔵 Setting loading to false");
       setIsLoading(false);
     }
   }
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-muted/50">
@@ -142,7 +146,6 @@ export function SigninForm() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"

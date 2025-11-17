@@ -19,6 +19,7 @@ import type * as emailVerification from "../emailVerification.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as passwordReset from "../passwordReset.js";
+import type * as passwordResetMutations from "../passwordResetMutations.js";
 import type * as pendingAuth from "../pendingAuth.js";
 import type * as sendEmail from "../sendEmail.js";
 
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   http: typeof http;
   passwordReset: typeof passwordReset;
+  passwordResetMutations: typeof passwordResetMutations;
   pendingAuth: typeof pendingAuth;
   sendEmail: typeof sendEmail;
 }>;

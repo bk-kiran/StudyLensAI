@@ -6,21 +6,21 @@ const schema = defineSchema({
     ...authTables,
 
     pendingUsers: defineTable({
-    email: v.string(),
-        passwordHash: v.string(), // Store hashed password temporarily
+        email: v.string(),
+        passwordHash: v.string(),
         code: v.string(),
         expiresAt: v.number(),
         verified: v.boolean(),
         attempts: v.number(),
-  }).index("by_email", ["email"]),
+    }).index("by_email", ["email"]),
 
     emailVerifications: defineTable({
         email: v.string(),
         code: v.string(),
         expiresAt: v.number(),
         verified: v.boolean(),
-        attempts: v.number(), // Track failed attempts
-  }).index("by_email", ["email"]),
+        attempts: v.number(),
+    }).index("by_email", ["email"]),
 
     passwordResets: defineTable({
         email: v.string(),
@@ -28,7 +28,20 @@ const schema = defineSchema({
         expiresAt: v.number(),
         verified: v.boolean(),
         attempts: v.number(),
-        oldPasswordHash: v.optional(v.string()), // For comparison
+        oldPasswordHash: v.optional(v.string()),
+    }).index("by_email", ["email"]),
+
+    passwordResetTemp: defineTable({
+        email: v.string(),
+        tempPassword: v.string(),
+        expiresAt: v.number(),
+    }).index("by_email", ["email"]),
+    
+    // NEW: Track pending password resets
+    pendingPasswordResets: defineTable({
+        email: v.string(),
+        newPassword: v.string(),
+        expiresAt: v.number(),
     }).index("by_email", ["email"]),
 
     courses: defineTable({

@@ -16,7 +16,7 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const requestReset = useMutation(api.passwordReset.requestPasswordReset);
+  const requestReset = useMutation(api.passwordResetMutations.requestPasswordReset);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

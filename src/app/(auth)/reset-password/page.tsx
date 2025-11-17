@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/password-input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMutation, useAction } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -24,8 +23,7 @@ export default function ResetPasswordPage() {
   const [isCodeVerified, setIsCodeVerified] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
 
-  const { signIn } = useAuthActions();
-  const verifyCode = useMutation(api.passwordReset.verifyResetCode);
+  const verifyCode = useMutation(api.passwordResetMutations.verifyResetCode);
   const completeReset = useAction(api.passwordReset.completePasswordReset);
 
   useEffect(() => {
@@ -66,22 +64,18 @@ export default function ResetPasswordPage() {
 
     setIsResetting(true);
     try {
-      // Complete the reset with new password
+      // Store pending password reset
       await completeReset({ 
         email, 
         code, 
         newPassword: newPassword 
       });
       
-      // Sign in with new password
-      await signIn("password", {
-        email: email,
-        password: newPassword,
-        flow: "signIn",
-      });
+      toast.success("Almost done! Now create your new password on the next screen.");
       
-      toast.success("Password reset successfully!");
-      router.push("/courses");
+      // Redirect to special reset completion page
+      router.push(`/complete-reset?email=${encodeURIComponent(email)}&password=${encodeURIComponent(newPassword)}`);
+      
     } catch (error: any) {
       console.error("Reset error:", error);
       toast.error(error.message || "Failed to reset password");
@@ -178,10 +172,10 @@ export default function ResetPasswordPage() {
                 {isResetting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Resetting Password...
+                    Preparing Reset...
                   </>
                 ) : (
-                  "Reset Password"
+                  "Continue"
                 )}
               </Button>
             </form>

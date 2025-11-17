@@ -5,12 +5,20 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 export const getCourses = query({
   handler: async (ctx) => {
     const userId = await getAuthUserId(ctx);
-    if (!userId) throw new Error("Unauthorized");
+    
+    console.log("🔍 getCourses - userId:", userId); // Debug
+    
+    if (!userId) {
+      console.log("❌ No userId found"); // Debug
+      throw new Error("Unauthorized");
+    }
 
     const courses = await ctx.db
       .query("courses")
       .withIndex("by_userId", (q) => q.eq("userId", userId))
       .collect();
+
+    console.log("📚 Found courses:", courses.length, courses); // Debug
 
     // Get file count for each course
     const coursesWithFileCount = await Promise.all(
@@ -20,12 +28,16 @@ export const getCourses = query({
           .withIndex("by_courseId", (q) => q.eq("courseId", course._id))
           .collect();
 
+        console.log(`📁 Course "${course.name}" has ${files.length} files`); // Debug
+
         return {
           ...course,
           fileCount: files.length,
         };
       })
     );
+
+    console.log("✅ Returning courses with file counts:", coursesWithFileCount); // Debug
 
     return coursesWithFileCount;
   },
@@ -38,6 +50,9 @@ export const createCourse = mutation({
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
+    
+    console.log("🔍 createCourse - userId:", userId); // Debug
+    
     if (!userId) throw new Error("Unauthorized");
 
     const courseId = await ctx.db.insert("courses", {
@@ -46,6 +61,8 @@ export const createCourse = mutation({
       description: args.description,
       createdAt: Date.now(),
     });
+
+    console.log("✅ Course created:", courseId); // Debug
 
     return courseId;
   },
