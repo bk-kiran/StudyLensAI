@@ -63,6 +63,19 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
     return <LoadingSkeleton />;
   }
 
+  // If courses is null (error case), show empty state
+  if (courses === null) {
+    return (
+      <div className="container xl:max-w-6xl mx-auto">
+        <div className="text-center py-10">
+          <p className="text-muted-foreground">
+            Unable to load courses. Please try again.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container xl:max-w-6xl mx-auto">
       <div className="flex justify-between items-center mb-8">

@@ -9,8 +9,8 @@ export const getCourses = query({
     console.log("🔍 getCourses - userId:", userId); // Debug
     
     if (!userId) {
-      console.log("❌ No userId found"); // Debug
-      throw new Error("Unauthorized");
+      console.log("❌ No userId found - returning empty array"); // Debug
+      return []; // Return empty array instead of throwing
     }
 
     const courses = await ctx.db

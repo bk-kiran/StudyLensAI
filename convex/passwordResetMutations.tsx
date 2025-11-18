@@ -457,11 +457,16 @@ export const transferAuthAccountToExistingUser = internalMutation({
         await ctx.db.delete(session._id);
       }
       
-      // Delete the new user (created by signUp)
-      await ctx.db.delete(args.newUserId);
+      // Delete the new user (created by signUp) - check if it exists first
+      const newUserToDelete = await ctx.db.get(args.newUserId);
+      if (newUserToDelete) {
+        await ctx.db.delete(args.newUserId);
+        console.log("✅ Deleted new user:", args.newUserId);
+      } else {
+        console.log("⚠️ New user already deleted or doesn't exist:", args.newUserId);
+      }
       
       console.log("✅ Transferred authAccount to existing user:", args.oldUserId);
-      console.log("✅ Deleted new user and all its sessions");
       
       // CRITICAL: Delete ALL other users with this email except the existing one
       // This ensures signIn will use the correct user
@@ -507,9 +512,14 @@ export const transferAuthAccountToExistingUser = internalMutation({
             await ctx.db.patch(file._id, { userId: args.oldUserId });
           }
           
-          // Delete the duplicate user
-          await ctx.db.delete(user._id);
-          console.log("🗑️ Deleted duplicate user:", user._id);
+          // Delete the duplicate user - check if it exists first
+          const userToDelete = await ctx.db.get(user._id);
+          if (userToDelete) {
+            await ctx.db.delete(user._id);
+            console.log("🗑️ Deleted duplicate user:", user._id);
+          } else {
+            console.log("⚠️ Duplicate user already deleted:", user._id);
+          }
         }
       }
       
