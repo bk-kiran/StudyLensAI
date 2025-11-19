@@ -47,6 +47,8 @@ export const createCourse = mutation({
   args: {
     name: v.string(),
     description: v.string(),
+    emoji: v.optional(v.string()),
+    color: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -60,6 +62,8 @@ export const createCourse = mutation({
       name: args.name,
       description: args.description,
       createdAt: Date.now(),
+      emoji: args.emoji,
+      color: args.color,
     });
 
     console.log("✅ Course created:", courseId); // Debug
@@ -100,6 +104,8 @@ export const updateCourse = mutation({
     id: v.id("courses"),
     name: v.string(),
     description: v.string(),
+    emoji: v.optional(v.string()),
+    color: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const userId = await getAuthUserId(ctx);
@@ -113,6 +119,8 @@ export const updateCourse = mutation({
     await ctx.db.patch(args.id, {
       name: args.name,
       description: args.description,
+      emoji: args.emoji,
+      color: args.color,
     });
   },
 });

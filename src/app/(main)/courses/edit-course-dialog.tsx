@@ -23,6 +23,20 @@ interface EditCourseDialogProps {
   course: Course | null;
 }
 
+const EMOJIS = ["📚", "💻", "🧪", "📊", "🎨", "📝", "🔬", "📐", "🌍", "💡", "⚡", "🎯", "🚀", "🎓", "📖", "🔍"];
+const COLORS = [
+  { name: "Blue", value: "#3b82f6" },
+  { name: "Purple", value: "#8b5cf6" },
+  { name: "Pink", value: "#ec4899" },
+  { name: "Red", value: "#ef4444" },
+  { name: "Orange", value: "#f97316" },
+  { name: "Yellow", value: "#eab308" },
+  { name: "Green", value: "#22c55e" },
+  { name: "Teal", value: "#14b8a6" },
+  { name: "Cyan", value: "#06b6d4" },
+  { name: "Indigo", value: "#6366f1" },
+];
+
 export function EditCourseDialog({
   open,
   onOpenChange,
@@ -30,6 +44,8 @@ export function EditCourseDialog({
 }: EditCourseDialogProps) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [emoji, setEmoji] = useState<string>("");
+  const [color, setColor] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   const updateCourse = useMutation(api.courses.updateCourse);
@@ -39,6 +55,8 @@ export function EditCourseDialog({
     if (course) {
       setName(course.name);
       setDescription(course.description || "");
+      setEmoji(course.emoji || "");
+      setColor(course.color || "");
     }
   }, [course]);
 
@@ -51,6 +69,8 @@ export function EditCourseDialog({
         id: course._id as any,
         name: name.trim(),
         description: description.trim(),
+        emoji: emoji || undefined,
+        color: color || undefined,
       });
       toast.success("Course updated successfully");
       onOpenChange(false);
@@ -64,7 +84,7 @@ export function EditCourseDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Course</DialogTitle>
           <DialogDescription>
@@ -94,6 +114,50 @@ export function EditCourseDialog({
               rows={3}
               disabled={isLoading}
             />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-2 block">
+              Emoji (Optional)
+            </label>
+            <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/50">
+              {EMOJIS.map((e) => (
+                <button
+                  key={e}
+                  type="button"
+                  onClick={() => setEmoji(e)}
+                  className={`text-2xl p-2 rounded-lg transition-all hover:scale-110 ${
+                    emoji === e
+                      ? "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2"
+                      : "hover:bg-muted"
+                  }`}
+                  disabled={isLoading}
+                >
+                  {e}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-2 block">
+              Color (Optional)
+            </label>
+            <div className="flex flex-wrap gap-2 p-3 border rounded-lg bg-muted/50">
+              {COLORS.map((c) => (
+                <button
+                  key={c.value}
+                  type="button"
+                  onClick={() => setColor(c.value)}
+                  className={`w-10 h-10 rounded-full transition-all hover:scale-110 ${
+                    color === c.value
+                      ? "ring-2 ring-offset-2 ring-foreground scale-110"
+                      : "hover:ring-2 hover:ring-offset-2 hover:ring-muted-foreground/50"
+                  }`}
+                  style={{ backgroundColor: c.value }}
+                  disabled={isLoading}
+                  title={c.name}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <DialogFooter>

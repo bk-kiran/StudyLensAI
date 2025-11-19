@@ -2,26 +2,6 @@
   "node": {
     "00884fd4381e1f88208dc4f335f1dd5c28ad802e48": {
       "workers": {
-        "app/(auth)/complete-reset/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/complete-reset/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/(auth)/forgot-password/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/forgot-password/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/(auth)/reset-password/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/reset-password/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/(auth)/signin/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/signin/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
-        "app/(auth)/verify-email/page": {
-          "moduleId": "[project]/.next-internal/server/app/(auth)/verify-email/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false
-        },
         "app/(main)/courses/page": {
           "moduleId": "[project]/.next-internal/server/app/(main)/courses/page/actions.js { ACTIONS_MODULE0 => \"[project]/node_modules/@convex-dev/auth/dist/nextjs/server/invalidateCache.js [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false
@@ -32,11 +12,6 @@
         }
       },
       "layer": {
-        "app/(auth)/complete-reset/page": "action-browser",
-        "app/(auth)/forgot-password/page": "action-browser",
-        "app/(auth)/reset-password/page": "action-browser",
-        "app/(auth)/signin/page": "action-browser",
-        "app/(auth)/verify-email/page": "action-browser",
         "app/(main)/courses/page": "action-browser",
         "app/page": "action-browser"
       }

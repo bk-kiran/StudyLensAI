@@ -49,6 +49,8 @@ const schema = defineSchema({
         name: v.string(),
         description: v.string(),
         createdAt: v.number(),
+        emoji: v.optional(v.string()),
+        color: v.optional(v.string()),
     }).index("by_userId", ["userId"]),
 
     files: defineTable({

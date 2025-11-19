@@ -12,6 +12,8 @@ export type Course = {
   fileCount: number;
   userId: string;
   createdAt: number;
+  emoji?: string;
+  color?: string;
 };
 
 export type CourseFile = {
