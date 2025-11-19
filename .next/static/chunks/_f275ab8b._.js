@@ -2570,68 +2570,49 @@ function CourseFilesView({ course, onBack }) {
                         className: "hidden md:flex w-[280px] overflow-y-auto border-r bg-muted/30 transition-all duration-300 relative flex flex-col flex-shrink-0",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "p-3 sm:p-4 border-b bg-background flex-shrink-0 relative",
+                                className: "p-3 sm:p-4 border-b bg-background flex-shrink-0",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center justify-between gap-2 sm:gap-3 mb-3 sm:mb-4",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-center gap-2 sm:gap-3 flex-1 min-w-0",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: "ghost",
-                                                        size: "icon",
-                                                        onClick: onBack,
-                                                        className: "h-8 w-8 flex-shrink-0",
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {
-                                                            className: "h-4 w-4"
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2 flex-1 min-w-0",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-xl sm:text-2xl flex-shrink-0",
+                                                            children: courseEmoji
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
                                                             lineNumber: 94,
                                                             columnNumber: 21
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 93,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-center gap-2 flex-1 min-w-0",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "text-xl sm:text-2xl flex-shrink-0",
-                                                                children: courseEmoji
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex-1 min-w-0",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                                className: "font-semibold text-xs sm:text-sm truncate",
+                                                                style: {
+                                                                    color: course.color ? courseColor : undefined
+                                                                },
+                                                                children: course.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 97,
-                                                                columnNumber: 21
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex-1 min-w-0",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                                                    className: "font-semibold text-xs sm:text-sm truncate",
-                                                                    style: {
-                                                                        color: course.color ? courseColor : undefined
-                                                                    },
-                                                                    children: course.name
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 99,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 98,
-                                                                columnNumber: 21
+                                                                lineNumber: 96,
+                                                                columnNumber: 23
                                                             }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 96,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                            lineNumber: 95,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                    lineNumber: 93,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
                                                 lineNumber: 92,
                                                 columnNumber: 17
@@ -2640,18 +2621,18 @@ function CourseFilesView({ course, onBack }) {
                                                 variant: "ghost",
                                                 size: "icon",
                                                 onClick: ()=>setFilesCollapsed(true),
-                                                className: "h-6 w-6 bg-background border rounded-md shadow-sm hover:bg-muted flex-shrink-0",
+                                                className: "h-7 w-7 bg-muted hover:bg-muted/80 flex-shrink-0",
                                                 title: "Hide files",
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronLeft$3e$__["ChevronLeft"], {
-                                                    className: "h-3 w-3"
+                                                    className: "h-3.5 w-3.5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 116,
+                                                    lineNumber: 113,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 109,
+                                                lineNumber: 106,
                                                 columnNumber: 17
                                             }, this)
                                         ]
@@ -2662,106 +2643,34 @@ function CourseFilesView({ course, onBack }) {
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex gap-1.5 sm:gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                onClick: ()=>setUploadDialogOpen(true),
-                                                size: "sm",
-                                                className: "flex-1 gap-1.5 text-xs h-8",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
-                                                        className: "h-3.5 w-3.5"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 125,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                        className: "hidden sm:inline",
-                                                        children: "Upload"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 126,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 120,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuTrigger"], {
-                                                        asChild: true,
-                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                            variant: "outline",
-                                                            size: "sm",
-                                                            className: "gap-1.5 text-xs h-8 px-2",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
-                                                                    className: "h-3.5 w-3.5"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 131,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
-                                                                    className: "h-3 w-3"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 132,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 130,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 129,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
-                                                        align: "start",
-                                                        className: "w-56",
-                                                        children: GENERATE_MODES.map((mode)=>{
-                                                            const Icon = mode.icon;
-                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
-                                                                onClick: ()=>setGenerateMode(mode.id),
-                                                                className: "gap-2",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                                        className: "h-4 w-4"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 144,
-                                                                        columnNumber: 27
-                                                                    }, this),
-                                                                    mode.label
-                                                                ]
-                                                            }, mode.id, true, {
-                                                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 139,
-                                                                columnNumber: 25
-                                                            }, this);
-                                                        })
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 135,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 128,
-                                                columnNumber: 17
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                            onClick: ()=>setUploadDialogOpen(true),
+                                            size: "sm",
+                                            className: "flex-1 gap-1.5 text-xs h-8",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
+                                                    className: "h-3.5 w-3.5"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                    lineNumber: 123,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    children: "Upload"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                    lineNumber: 124,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                            lineNumber: 118,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 119,
+                                        lineNumber: 117,
                                         columnNumber: 15
                                     }, this),
                                     generateMode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2771,7 +2680,7 @@ function CourseFilesView({ course, onBack }) {
                                                 className: "h-3 w-3 text-primary flex-shrink-0"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 154,
+                                                lineNumber: 130,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2779,7 +2688,7 @@ function CourseFilesView({ course, onBack }) {
                                                 children: GENERATE_MODES.find((m)=>m.id === generateMode)?.label
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 155,
+                                                lineNumber: 131,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2790,13 +2699,13 @@ function CourseFilesView({ course, onBack }) {
                                                 children: "×"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 158,
+                                                lineNumber: 134,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 129,
                                         columnNumber: 17
                                     }, this)
                                 ]
@@ -2816,12 +2725,12 @@ function CourseFilesView({ course, onBack }) {
                                                 className: "h-6 w-6 text-primary/60"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 175,
+                                                lineNumber: 151,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 150,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2829,7 +2738,7 @@ function CourseFilesView({ course, onBack }) {
                                             children: "No files yet"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 177,
+                                            lineNumber: 153,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2837,7 +2746,7 @@ function CourseFilesView({ course, onBack }) {
                                             children: "Upload your first PDF"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 178,
+                                            lineNumber: 154,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2850,20 +2759,20 @@ function CourseFilesView({ course, onBack }) {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 187,
+                                                    lineNumber: 163,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Upload"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 181,
+                                            lineNumber: 157,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 173,
+                                    lineNumber: 149,
                                     columnNumber: 17
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-1",
@@ -2879,12 +2788,12 @@ function CourseFilesView({ course, onBack }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 194,
+                                                lineNumber: 170,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 193,
+                                            lineNumber: 169,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2907,12 +2816,12 @@ function CourseFilesView({ course, onBack }) {
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 214,
+                                                                    lineNumber: 190,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 208,
+                                                                lineNumber: 184,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2923,7 +2832,7 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: file.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 217,
+                                                                        lineNumber: 193,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2931,13 +2840,13 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: formatDate(file.uploadDate)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 220,
+                                                                        lineNumber: 196,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 216,
+                                                                lineNumber: 192,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2953,39 +2862,39 @@ function CourseFilesView({ course, onBack }) {
                                                                     className: "h-3 w-3 text-destructive"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 234,
+                                                                    lineNumber: 210,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 224,
+                                                                lineNumber: 200,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 205,
+                                                        lineNumber: 181,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, file._id, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 200,
+                                                    lineNumber: 176,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 174,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 192,
+                                    lineNumber: 168,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 171,
+                                lineNumber: 147,
                                 columnNumber: 13
                             }, this)
                         ]
@@ -2997,53 +2906,66 @@ function CourseFilesView({ course, onBack }) {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex-1 flex flex-col relative bg-background min-w-0",
                         children: [
-                            filesCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute left-0 top-0 bottom-0 w-12 flex items-start justify-center pt-3 z-10 pointer-events-none",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                    variant: "ghost",
-                                    size: "icon",
-                                    onClick: ()=>setFilesCollapsed(false),
-                                    className: "h-8 w-8 bg-background border border-r-0 rounded-r-md shadow-sm hover:bg-muted pointer-events-auto",
-                                    title: "Show files",
-                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
-                                        className: "h-4 w-4"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 258,
-                                        columnNumber: 17
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 251,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 250,
-                                columnNumber: 13
-                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between flex-shrink-0",
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center gap-2 sm:gap-3 min-w-0 flex-1",
                                         children: [
-                                            filesCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                variant: "ghost",
-                                                size: "icon",
-                                                onClick: onBack,
-                                                className: "h-8 w-8 flex-shrink-0",
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {
-                                                    className: "h-4 w-4"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 268,
-                                                    columnNumber: 19
-                                                }, this)
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-2",
+                                                children: filesCollapsed && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            variant: "outline",
+                                                            size: "icon",
+                                                            onClick: ()=>setFilesCollapsed(false),
+                                                            className: "h-8 w-8 flex-shrink-0",
+                                                            title: "Show files",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
+                                                                className: "h-4 w-4"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                                lineNumber: 238,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                            lineNumber: 231,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            variant: "ghost",
+                                                            onClick: onBack,
+                                                            className: "h-8 gap-1.5 px-3 flex-shrink-0 hover:bg-muted",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {
+                                                                    className: "h-4 w-4"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                                    lineNumber: 246,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-sm",
+                                                                    children: "Back to Courses"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                                    lineNumber: 247,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
+                                                            lineNumber: 241,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 267,
-                                                columnNumber: 17
+                                                lineNumber: 227,
+                                                columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-center gap-2 min-w-0",
@@ -3053,7 +2975,7 @@ function CourseFilesView({ course, onBack }) {
                                                         children: courseEmoji
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 272,
+                                                        lineNumber: 253,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3067,7 +2989,7 @@ function CourseFilesView({ course, onBack }) {
                                                                 children: course.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 274,
+                                                                lineNumber: 255,
                                                                 columnNumber: 19
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3075,25 +2997,25 @@ function CourseFilesView({ course, onBack }) {
                                                                 children: course.description || "No description"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 280,
+                                                                lineNumber: 261,
                                                                 columnNumber: 19
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 273,
+                                                        lineNumber: 254,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 271,
+                                                lineNumber: 252,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 226,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3110,7 +3032,7 @@ function CourseFilesView({ course, onBack }) {
                                                             className: "h-3.5 w-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 293,
+                                                            lineNumber: 274,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3118,13 +3040,13 @@ function CourseFilesView({ course, onBack }) {
                                                             children: "Upload"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 294,
+                                                            lineNumber: 275,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 287,
+                                                    lineNumber: 268,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
@@ -3140,7 +3062,7 @@ function CourseFilesView({ course, onBack }) {
                                                                         className: "h-3.5 w-3.5"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 299,
+                                                                        lineNumber: 280,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3148,25 +3070,25 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: "Generate"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 300,
+                                                                        lineNumber: 281,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 301,
+                                                                        lineNumber: 282,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 298,
+                                                                lineNumber: 279,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 297,
+                                                            lineNumber: 278,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -3182,39 +3104,39 @@ function CourseFilesView({ course, onBack }) {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                            lineNumber: 313,
+                                                                            lineNumber: 294,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         mode.label
                                                                     ]
                                                                 }, mode.id, true, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 308,
+                                                                    lineNumber: 289,
                                                                     columnNumber: 27
                                                                 }, this);
                                                             })
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 304,
+                                                            lineNumber: 285,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 296,
+                                                    lineNumber: 277,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 284,
+                                        lineNumber: 265,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 264,
+                                lineNumber: 225,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3225,18 +3147,18 @@ function CourseFilesView({ course, onBack }) {
                                     onModeChange: setGenerateMode
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 327,
+                                    lineNumber: 308,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 326,
+                                lineNumber: 307,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                        lineNumber: 247,
+                        lineNumber: 223,
                         columnNumber: 9
                     }, this)
                 ]
@@ -3252,7 +3174,7 @@ function CourseFilesView({ course, onBack }) {
                 courseId: course._id
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                lineNumber: 336,
+                lineNumber: 317,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$confirm$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ConfirmDialog"], {
@@ -3266,7 +3188,7 @@ function CourseFilesView({ course, onBack }) {
                 destructive: true
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                lineNumber: 343,
+                lineNumber: 324,
                 columnNumber: 7
             }, this)
         ]
@@ -3297,14 +3219,14 @@ function LoadingSkeleton({ onBack, course }) {
                             className: "h-8 w-full mb-4"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 371,
+                            lineNumber: 352,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Skeleton"], {
                             className: "h-6 w-20 mb-2"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 372,
+                            lineNumber: 353,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3315,18 +3237,18 @@ function LoadingSkeleton({ onBack, course }) {
                                     className: "h-12 w-full rounded-md"
                                 }, i, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 375,
+                                    lineNumber: 356,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 373,
+                            lineNumber: 354,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                    lineNumber: 370,
+                    lineNumber: 351,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3338,12 +3260,12 @@ function LoadingSkeleton({ onBack, course }) {
                                 className: "h-6 w-48"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 383,
+                                lineNumber: 364,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 382,
+                            lineNumber: 363,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3352,29 +3274,29 @@ function LoadingSkeleton({ onBack, course }) {
                                 className: "h-full w-full rounded-lg"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 386,
+                                lineNumber: 367,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 385,
+                            lineNumber: 366,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                    lineNumber: 381,
+                    lineNumber: 362,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-            lineNumber: 368,
+            lineNumber: 349,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-        lineNumber: 367,
+        lineNumber: 348,
         columnNumber: 5
     }, this);
 }

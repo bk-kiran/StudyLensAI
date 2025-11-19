@@ -87,12 +87,9 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
         {!filesCollapsed && (
           <div className="hidden md:flex w-[280px] overflow-y-auto border-r bg-muted/30 transition-all duration-300 relative flex flex-col flex-shrink-0">
             {/* Sidebar Header */}
-            <div className="p-3 sm:p-4 border-b bg-background flex-shrink-0 relative">
+            <div className="p-3 sm:p-4 border-b bg-background flex-shrink-0">
               <div className="flex items-center justify-between gap-2 sm:gap-3 mb-3 sm:mb-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 flex-shrink-0">
-                    <ArrowLeft className="h-4 w-4" />
-                  </Button>
                   <div className="flex items-center gap-2 flex-1 min-w-0">
                     <span className="text-xl sm:text-2xl flex-shrink-0">{courseEmoji}</span>
                     <div className="flex-1 min-w-0">
@@ -110,12 +107,13 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
                   variant="ghost"
                   size="icon"
                   onClick={() => setFilesCollapsed(true)}
-                  className="h-6 w-6 bg-background border rounded-md shadow-sm hover:bg-muted flex-shrink-0"
+                  className="h-7 w-7 bg-muted hover:bg-muted/80 flex-shrink-0"
                   title="Hide files"
                 >
-                  <ChevronLeft className="h-3 w-3" />
+                  <ChevronLeft className="h-3.5 w-3.5" />
                 </Button>
               </div>
+              
               <div className="flex gap-1.5 sm:gap-2">
                 <Button 
                   onClick={() => setUploadDialogOpen(true)} 
@@ -123,32 +121,10 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
                   className="flex-1 gap-1.5 text-xs h-8"
                 >
                   <Upload className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Upload</span>
+                  <span>Upload</span>
                 </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="gap-1.5 text-xs h-8 px-2">
-                      <Sparkles className="h-3.5 w-3.5" />
-                      <ChevronDown className="h-3 w-3" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-56">
-                    {GENERATE_MODES.map((mode) => {
-                      const Icon = mode.icon;
-                      return (
-                        <DropdownMenuItem
-                          key={mode.id}
-                          onClick={() => setGenerateMode(mode.id)}
-                          className="gap-2"
-                        >
-                          <Icon className="h-4 w-4" />
-                          {mode.label}
-                        </DropdownMenuItem>
-                      );
-                    })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
               </div>
+              
               {generateMode && (
                 <div className="mt-2 flex items-center gap-2 p-1.5 bg-primary/10 rounded-md border border-primary/20">
                   <Sparkles className="h-3 w-3 text-primary flex-shrink-0" />
@@ -245,29 +221,34 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
 
         {/* Right Side - AI Panel */}
         <div className="flex-1 flex flex-col relative bg-background min-w-0">
-          {/* Expand Button (when files are collapsed) */}
-          {filesCollapsed && (
-            <div className="absolute left-0 top-0 bottom-0 w-12 flex items-start justify-center pt-3 z-10 pointer-events-none">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setFilesCollapsed(false)}
-                className="h-8 w-8 bg-background border border-r-0 rounded-r-md shadow-sm hover:bg-muted pointer-events-auto"
-                title="Show files"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
-
           {/* Top Bar */}
           <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
-              {filesCollapsed && (
-                <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8 flex-shrink-0">
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
-              )}
+              <div className="flex items-center gap-2">
+                {filesCollapsed && (
+                  <>
+                    {/* Expand sidebar button - with distinct styling */}
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => setFilesCollapsed(false)}
+                      className="h-8 w-8 flex-shrink-0"
+                      title="Show files"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    {/* Back button with text - with different styling */}
+                    <Button 
+                      variant="ghost" 
+                      onClick={onBack} 
+                      className="h-8 gap-1.5 px-3 flex-shrink-0 hover:bg-muted"
+                    >
+                      <ArrowLeft className="h-4 w-4" />
+                      <span className="text-sm">Back to Courses</span>
+                    </Button>
+                  </>
+                )}
+              </div>
               <div className="flex items-center gap-2 min-w-0">
                 <span className="text-lg sm:text-xl flex-shrink-0">{courseEmoji}</span>
                 <div className="min-w-0">
