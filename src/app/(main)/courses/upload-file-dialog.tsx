@@ -11,10 +11,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useMutation } from "convex/react";
+import { useMutation, useAction } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { extractTextFromPDF } from "@/lib/pdfParser";
 
 interface UploadFileDialogProps {
   open: boolean;
@@ -33,17 +34,17 @@ export function UploadFileDialog({
   const [isUploading, setIsUploading] = useState(false);
 
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
-  const saveFile = useMutation(api.files.saveFile);
+  const createFile = useAction(api.fileActions.createFile);
 
   const handleSubmit = async () => {
     if (!selectedFile) return;
 
     setIsUploading(true);
     try {
-      // Step 1: Get upload URL
+      // 1. Get upload URL
       const uploadUrl = await generateUploadUrl();
 
-      // Step 2: Upload file to Convex storage
+      // 2. Upload file to Convex storage
       const result = await fetch(uploadUrl, {
         method: "POST",
         headers: { "Content-Type": selectedFile.type },
@@ -52,14 +53,18 @@ export function UploadFileDialog({
 
       const { storageId } = await result.json();
 
-      // Step 3: Save file metadata
-      await saveFile({
-        courseId,
+      // 3. Extract text from PDF for embeddings
+      const extractedText = await extractTextFromPDF(selectedFile);
+
+      // 4. Atomically create file (metadata) and embeddings in Convex
+      await createFile({
         name: selectedFile.name,
+        courseId,
         storageId,
+        fileContent: extractedText,
       });
 
-      toast.success("File uploaded successfully");
+      toast.success("File uploaded and embeddings are being processed!");
       setSelectedFile(null);
       onOpenChange(false);
     } catch (error) {

@@ -62,6 +62,20 @@ export function CourseAIChatBox({
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      fetch: async (url, options) => {
+        // Intercept and modify the request body to include courseId and generateMode
+        if (options?.body) {
+          try {
+            const body = JSON.parse(options.body as string);
+            body.courseId = courseId;
+            body.generateMode = generateMode;
+            options.body = JSON.stringify(body);
+          } catch (e) {
+            console.error("Failed to modify request body:", e);
+          }
+        }
+        return fetch(url, options);
+      },
     }),
   });
 

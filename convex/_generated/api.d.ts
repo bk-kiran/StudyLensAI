@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as chatMessages from "../chatMessages.js";
 import type * as courses from "../courses.js";
 import type * as emailVerification from "../emailVerification.js";
+import type * as fileActions from "../fileActions.js";
 import type * as files from "../files.js";
 import type * as http from "../http.js";
 import type * as passwordReset from "../passwordReset.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   chatMessages: typeof chatMessages;
   courses: typeof courses;
   emailVerification: typeof emailVerification;
+  fileActions: typeof fileActions;
   files: typeof files;
   http: typeof http;
   passwordReset: typeof passwordReset;

@@ -72,6 +72,21 @@ const schema = defineSchema({
   })
     .index("by_course_and_user", ["courseId", "userId"])
     .index("by_course", ["courseId"]),
+
+    fileEmbeddings: defineTable({
+        content: v.string(),
+        embedding: v.array(v.float64()),
+        fileId: v.id("files"),
+        userId: v.id("users"),
+        courseId: v.id("courses"), // Optional: to filter by course
+    })
+        .index("by_fileId", ["fileId"])
+        .index("by_courseId", ["courseId"])
+        .vectorIndex("by_embedding", {
+        vectorField: "embedding",
+        dimensions: 1536, // OpenAI text-embedding-3-small uses 1536 dimensions
+        filterFields: ["userId", "courseId"],
+    }),
 });
 
 export default schema;
