@@ -62,6 +62,16 @@ const schema = defineSchema({
     })
     .index("by_userId", ["userId"])
     .index("by_courseId", ["courseId"]),
+
+    chatMessages: defineTable({
+    courseId: v.id("courses"),
+    userId: v.id("users"),
+    role: v.union(v.literal("user"), v.literal("assistant")),
+    content: v.string(),
+    timestamp: v.number(),
+  })
+    .index("by_course_and_user", ["courseId", "userId"])
+    .index("by_course", ["courseId"]),
 });
 
 export default schema;

@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as auth from "../auth.js";
+import type * as chatMessages from "../chatMessages.js";
 import type * as courses from "../courses.js";
 import type * as emailVerification from "../emailVerification.js";
 import type * as files from "../files.js";
@@ -33,6 +34,7 @@ import type * as sendEmail from "../sendEmail.js";
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  chatMessages: typeof chatMessages;
   courses: typeof courses;
   emailVerification: typeof emailVerification;
   files: typeof files;

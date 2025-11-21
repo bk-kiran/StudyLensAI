@@ -134,10 +134,7 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
                   <CardTitle className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <span className="text-2xl flex-shrink-0">{courseEmoji}</span>
-                      <span 
-                        className="text-lg font-semibold transition-colors line-clamp-1 group-hover:opacity-80"
-                        style={{ color: course.color ? courseColor : undefined }}
-                      >
+                      <span className="text-lg font-semibold transition-colors line-clamp-1 group-hover:opacity-80">
                         {course.name}
                       </span>
                     </div>
@@ -173,10 +170,7 @@ export function CoursesList({ onSelectCourse }: CoursesListProps) {
                         {course.fileCount} file{course.fileCount !== 1 ? "s" : ""}
                       </span>
                     </div>
-                    <ArrowRight 
-                      className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-all" 
-                      style={{ color: course.color ? courseColor : undefined }}
-                    />
+                    <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-1 transition-all" />
                   </div>
                 </CardContent>
               </Card>

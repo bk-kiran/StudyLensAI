@@ -307,6 +307,7 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
           <div className="flex-1 overflow-hidden min-h-0 flex flex-col">
             <CourseAIChatBox
               courseName={course.name}
+              courseId={course._id}
               generateMode={generateMode}
               onModeChange={setGenerateMode}
             />
