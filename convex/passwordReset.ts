@@ -3,6 +3,7 @@
 import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { Id } from "./_generated/dataModel";
 import bcrypt from "bcryptjs";
 import { auth } from "./auth";
 
@@ -132,7 +133,7 @@ export const transferAuthAccountAfterSignUp = action({
     });
     
     // Find the new user (the one that's NOT the existing user)
-    const newUser = allUsers.find(userId => userId !== args.existingUserId);
+    const newUser = allUsers.find((userId: Id<"users">) => userId !== args.existingUserId);
     
     if (!newUser) {
       // No new user found - maybe signUp didn't create one, or it's the same user
