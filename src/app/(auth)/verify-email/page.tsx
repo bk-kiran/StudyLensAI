@@ -18,11 +18,9 @@ export default function VerifyEmailPage() {
 
   const [code, setCode] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isResending, setIsResending] = useState(false);
 
   const { signIn } = useAuthActions();
   const verifyAndCreateAccount = useMutation(api.pendingAuth.verifyAndCreateAccount);
-  const createPendingUser = useMutation(api.pendingAuth.createPendingUser);
 
   useEffect(() => {
     if (!email) {
@@ -48,25 +46,11 @@ export default function VerifyEmailPage() {
       
       toast.success("Email verified! Account created successfully!");
       router.push("/courses");
-    } catch (error: any) {
-      toast.error(error.message || "Invalid verification code");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Invalid verification code";
+      toast.error(errorMessage);
     } finally {
       setIsVerifying(false);
-    }
-  };
-
-  const handleResend = async () => {
-    if (!email) return;
-
-    setIsResending(true);
-    try {
-      // This would need the password - better to store it in state or session
-      toast.info("Please register again to get a new code");
-      router.push("/signin");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to resend code");
-    } finally {
-      setIsResending(false);
     }
   };
 
@@ -78,7 +62,7 @@ export default function VerifyEmailPage() {
         <CardHeader>
           <CardTitle>Verify Your Email</CardTitle>
           <CardDescription>
-            We've sent a 6-digit verification code to <strong>{email}</strong>
+            We&apos;ve sent a 6-digit verification code to <strong>{email}</strong>
           </CardDescription>
         </CardHeader>
         <CardContent>

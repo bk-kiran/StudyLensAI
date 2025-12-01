@@ -74,10 +74,10 @@ export function SigninForm() {
         toast.success("Successfully signed in!");
         router.push("/courses");
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("❌ Sign-in/up error:", error);
       
-      const errorMessage = error?.message || error?.toString() || "";
+      const errorMessage = error instanceof Error ? error.message : String(error);
       
       console.log("Error message:", errorMessage);
       
