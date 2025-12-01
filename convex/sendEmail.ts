@@ -4,8 +4,6 @@ import { v } from "convex/values";
 import { action } from "./_generated/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export const sendVerificationEmail = action({
   args: {
     email: v.string(),
@@ -14,9 +12,12 @@ export const sendVerificationEmail = action({
   handler: async (ctx, args) => {
     console.log("🔵 EMAIL ACTION TRIGGERED", args.email, args.code);
     
+    // Initialize Resend inside the handler
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
     try {
       const result = await resend.emails.send({
-        from: 'StudyLensAI <noreply@kiranbk.com>', // Updated to your domain
+        from: 'StudyLensAI <noreply@kiranbk.com>',
         to: args.email,
         subject: 'Verify your email - StudyLensAI',
         html: `
@@ -42,7 +43,6 @@ export const sendVerificationEmail = action({
   },
 });
 
-// NEW: Password reset email
 export const sendPasswordResetEmail = action({
   args: {
     email: v.string(),
@@ -51,9 +51,12 @@ export const sendPasswordResetEmail = action({
   handler: async (ctx, args) => {
     console.log("🔵 PASSWORD RESET EMAIL TRIGGERED", args.email, args.code);
     
+    // Initialize Resend inside the handler
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
     try {
       const result = await resend.emails.send({
-        from: 'StudyLensAI <noreply@kiranbk.com>', // Updated to your domain
+        from: 'StudyLensAI <noreply@kiranbk.com>',
         to: args.email,
         subject: 'Reset your password - StudyLensAI',
         html: `
