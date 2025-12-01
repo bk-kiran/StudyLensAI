@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Upload, FileText, Trash2, Bot, ChevronDown, Sparkles, BookOpen, HelpCircle, Lightbulb, ListChecks, FileQuestion, ChevronLeft, ChevronRight } from "lucide-react";
 import { Course } from "./courses-page";
