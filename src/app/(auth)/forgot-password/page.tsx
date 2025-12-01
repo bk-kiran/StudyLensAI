@@ -27,8 +27,9 @@ export default function ForgotPasswordPage() {
       await requestReset({ email });
       toast.success("Reset code sent to your email!");
       router.push(`/reset-password?email=${encodeURIComponent(email)}`);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to send reset code");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to send reset code";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +41,7 @@ export default function ForgotPasswordPage() {
         <CardHeader>
           <CardTitle>Forgot Password</CardTitle>
           <CardDescription>
-            Enter your email address and we'll send you a code to reset your password.
+            Enter your email address and we&apos;ll send you a code to reset your password.
           </CardDescription>
         </CardHeader>
         <CardContent>

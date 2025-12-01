@@ -41,8 +41,9 @@ export default function ResetPasswordPage() {
       await verifyCode({ email, code });
       setIsCodeVerified(true);
       toast.success("Code verified! Enter your new password.");
-    } catch (error: any) {
-      toast.error(error.message || "Invalid code");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Invalid code";
+      toast.error(errorMessage);
     } finally {
       setIsVerifying(false);
     }
@@ -76,9 +77,10 @@ export default function ResetPasswordPage() {
       // Redirect to special reset completion page
       router.push(`/complete-reset?email=${encodeURIComponent(email)}&password=${encodeURIComponent(newPassword)}`);
       
-    } catch (error: any) {
+    } catch (error) {
       console.error("Reset error:", error);
-      toast.error(error.message || "Failed to reset password");
+      const errorMessage = error instanceof Error ? error.message : "Failed to reset password";
+      toast.error(errorMessage);
     } finally {
       setIsResetting(false);
     }
