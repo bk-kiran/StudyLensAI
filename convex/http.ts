@@ -281,22 +281,50 @@ Politely inform the user that they need to upload PDF files to this course first
         console.log(`System prompt length: ${systemPrompt.length} chars`);
         console.log(`Number of messages: ${modelMessages.length}`);
 
-        const result = streamText({
-            model: openai("gpt-4o-mini"),
-            system: systemPrompt,
-            messages: modelMessages,
-            onError(error) {
-                console.error("streamText error: ", error)
-            }
-        })
+        try {
+            // Increase maxTokens for generation modes that need longer responses
+            const maxTokens = generateMode === "flashcards" || generateMode === "study-guide" || generateMode === "summary" 
+                ? 4000 
+                : 2000;
 
+            const result = streamText({
+                model: openai("gpt-4o-mini"),
+                system: systemPrompt,
+                messages: modelMessages,
+                maxTokens: maxTokens,
+                onError(error) {
+                    console.error("streamText error: ", error);
+                    // Log more details about the error
+                    if (error instanceof Error) {
+                        console.error("Error message: ", error.message);
+                        console.error("Error stack: ", error.stack);
+                    }
+                }
+            });
 
-        return result.toUIMessageStreamResponse({
-            headers: new Headers({
-                "Access-Control-Allow-Origin": "*",
-                Vary: "origin",
-            })
-        })
+            return result.toUIMessageStreamResponse({
+                headers: new Headers({
+                    "Access-Control-Allow-Origin": "*",
+                    Vary: "origin",
+                })
+            });
+        } catch (error) {
+            console.error("Error in streamText setup: ", error);
+            // Return a proper error response
+            return Response.json(
+                { 
+                    error: "Failed to generate response. Please try again.",
+                    details: error instanceof Error ? error.message : "Unknown error"
+                },
+                { 
+                    status: 500,
+                    headers: new Headers({
+                        "Access-Control-Allow-Origin": "*",
+                        "Content-Type": "application/json",
+                    })
+                }
+            );
+        }
     })
 })
 
