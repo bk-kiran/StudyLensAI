@@ -108,15 +108,15 @@ export function ExamGeneratorView({ courseId }: ExamGeneratorViewProps) {
   };
 
   return (
-    <div className="h-full flex flex-col p-6">
-      <div className="mb-6">
+    <div className="h-full flex flex-col overflow-hidden p-6">
+      <div className="mb-6 flex-shrink-0">
         <h2 className="text-lg font-semibold mb-2">Practice Exam Generator</h2>
         <p className="text-sm text-muted-foreground">
           Generate practice exams from your course materials using AI. The system will analyze your content, identify key topics, and create exam questions.
         </p>
       </div>
 
-      <Card className="p-6 mb-6">
+      <Card className="p-6 mb-6 flex-shrink-0">
         <h3 className="font-semibold mb-4">Generate New Exam</h3>
         <div className="space-y-4">
           <div>
@@ -176,9 +176,9 @@ export function ExamGeneratorView({ courseId }: ExamGeneratorViewProps) {
       </Card>
 
       {workflows && workflows.length > 0 && (
-        <div>
-          <h3 className="font-semibold mb-4">Generated Exams</h3>
-          <div className="space-y-3">
+        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+          <h3 className="font-semibold mb-4 flex-shrink-0">Generated Exams</h3>
+          <div className="flex-1 overflow-y-auto space-y-3 pr-2">
             {workflows.map((workflow) => (
               <Card 
                 key={workflow._id} 

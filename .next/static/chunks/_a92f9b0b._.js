@@ -3497,7 +3497,7 @@ function FlashcardsView({ courseId }) {
     const [count, setCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(10);
     const [generating, setGenerating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [dialogOpen, setDialogOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [reviewAll, setReviewAll] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [reviewAll, setReviewAll] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true); // Default to true so all flashcards are visible
     const [filter, setFilter] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("all");
     const flashcards = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["api"].flashcards.getFlashcards, {
         courseId,
@@ -3512,9 +3512,13 @@ function FlashcardsView({ courseId }) {
     const validFlashcards = flashcards?.filter((f)=>{
         if (!f.question?.trim() || !f.answer?.trim()) return false;
         // Apply difficulty filter based on last review quality
-        // If no review yet, only show in "all" filter
-        if (filter === "all") return true;
-        if (!f.lastReviewQuality) return false; // No review yet, only show in "all"
+        if (filter === "all") return true; // Show all when "All" is selected
+        // If no review yet, only show in "all" filter (unless reviewAll is enabled)
+        if (!f.lastReviewQuality) {
+            // If reviewAll is enabled, show unreviewed cards in "all" only
+            // If reviewAll is disabled, show unreviewed cards in "all" only
+            return false;
+        }
         // Map review quality to difficulty: 5=easy, 4=easy, 3=medium, 2=hard, 1=hard
         if (filter === "easy" && f.lastReviewQuality >= 4) return true;
         if (filter === "medium" && f.lastReviewQuality === 3) return true;
@@ -3582,17 +3586,24 @@ function FlashcardsView({ courseId }) {
                 flashcardId: currentFlashcard._id,
                 quality
             });
-            // Move to next flashcard or reset
+            // Move to next flashcard or show completion message
             const currentSafeIndex = validFlashcards.length > 0 ? Math.min(currentIndex, Math.max(0, validFlashcards.length - 1)) : 0;
             const nextIndex = currentSafeIndex + 1;
             if (nextIndex < validFlashcards.length) {
                 setCurrentIndex(nextIndex);
                 setIsFlipped(false);
             } else {
-                // All flashcards reviewed, reset
-                setCurrentIndex(0);
+                // All visible flashcards reviewed
                 setIsFlipped(false);
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("All flashcards reviewed! Great job!");
+                // If reviewAll is enabled, just reset to first card
+                // If reviewAll is disabled, show completion message
+                if (reviewAll) {
+                    setCurrentIndex(0);
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("All visible flashcards reviewed! Great job! You can continue reviewing or change filters.");
+                } else {
+                    setCurrentIndex(0);
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("All due flashcards reviewed! Enable 'Review All' to see all flashcards.");
+                }
             }
         } catch (error) {
             console.error("Review error:", error);
@@ -3624,12 +3635,12 @@ function FlashcardsView({ courseId }) {
                 className: "h-6 w-6 animate-spin text-primary"
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                lineNumber: 176,
+                lineNumber: 190,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-            lineNumber: 175,
+            lineNumber: 189,
             columnNumber: 7
         }, this);
     }
@@ -3644,31 +3655,31 @@ function FlashcardsView({ courseId }) {
                         className: "h-8 w-8 text-primary"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 186,
+                        lineNumber: 200,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 185,
+                    lineNumber: 199,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                     className: "text-lg font-semibold mb-2",
-                    children: hasFlashcards ? `No ${filter !== "all" ? filter : ""} flashcards ${reviewAll ? "available" : "due for review"}` : "No flashcards to review"
+                    children: hasFlashcards ? filter !== "all" ? `No ${filter} flashcards ${reviewAll ? "available" : "due for review"}` : reviewAll ? "No flashcards available" : "No flashcards due for review" : "No flashcards to review"
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 188,
+                    lineNumber: 202,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     className: "text-sm text-muted-foreground mb-6 text-center max-w-md",
-                    children: hasFlashcards && filter !== "all" ? `Try selecting a different filter or enable "Review All" to see all flashcards.` : "Generate flashcards from your course materials to start practicing with spaced repetition."
+                    children: hasFlashcards && filter !== "all" ? `Try selecting "All" to see all flashcards, or enable "Review All" to see all flashcards regardless of review date.` : hasFlashcards && !reviewAll ? `Enable "Review All" to see all flashcards, or wait for flashcards to become due for review.` : "Generate flashcards from your course materials to start practicing with spaced repetition."
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 193,
+                    lineNumber: 211,
                     columnNumber: 9
                 }, this),
-                hasFlashcards && (filter !== "all" || !reviewAll) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                hasFlashcards && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "flex gap-2",
                     children: [
                         filter !== "all" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3678,23 +3689,26 @@ function FlashcardsView({ courseId }) {
                             children: "Show All"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                            lineNumber: 201,
+                            lineNumber: 221,
                             columnNumber: 15
                         }, this),
                         !reviewAll && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                             size: "sm",
                             variant: "outline",
-                            onClick: ()=>setReviewAll(true),
+                            onClick: ()=>{
+                                setReviewAll(true);
+                                setFilter("all");
+                            },
                             children: "Review All"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                            lineNumber: 210,
+                            lineNumber: 230,
                             columnNumber: 15
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 199,
+                    lineNumber: 219,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3709,19 +3723,19 @@ function FlashcardsView({ courseId }) {
                                         className: "h-4 w-4 mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 223,
+                                        lineNumber: 246,
                                         columnNumber: 15
                                     }, this),
                                     "Generate Flashcards"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 222,
+                                lineNumber: 245,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                            lineNumber: 221,
+                            lineNumber: 244,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogContent"], {
@@ -3732,20 +3746,20 @@ function FlashcardsView({ courseId }) {
                                             children: "Generate Flashcards"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 229,
+                                            lineNumber: 252,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                             children: "Create flashcards from your course materials using AI. You can specify a topic or generate general flashcards."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 253,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                    lineNumber: 228,
+                                    lineNumber: 251,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3758,7 +3772,7 @@ function FlashcardsView({ courseId }) {
                                                     children: "Topic (optional)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                    lineNumber: 236,
+                                                    lineNumber: 259,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -3769,13 +3783,13 @@ function FlashcardsView({ courseId }) {
                                                     className: "mt-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                    lineNumber: 237,
+                                                    lineNumber: 260,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 235,
+                                            lineNumber: 258,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3785,7 +3799,7 @@ function FlashcardsView({ courseId }) {
                                                     children: "Number of flashcards"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                    lineNumber: 246,
+                                                    lineNumber: 269,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -3798,13 +3812,13 @@ function FlashcardsView({ courseId }) {
                                                     className: "mt-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                    lineNumber: 247,
+                                                    lineNumber: 270,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 245,
+                                            lineNumber: 268,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3817,7 +3831,7 @@ function FlashcardsView({ courseId }) {
                                                         className: "h-4 w-4 mr-2 animate-spin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                        lineNumber: 264,
+                                                        lineNumber: 287,
                                                         columnNumber: 21
                                                     }, this),
                                                     "Generating..."
@@ -3828,7 +3842,7 @@ function FlashcardsView({ courseId }) {
                                                         className: "h-4 w-4 mr-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                        lineNumber: 269,
+                                                        lineNumber: 292,
                                                         columnNumber: 21
                                                     }, this),
                                                     "Generate Flashcards"
@@ -3836,31 +3850,31 @@ function FlashcardsView({ courseId }) {
                                             }, void 0, true)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 257,
+                                            lineNumber: 280,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                    lineNumber: 234,
+                                    lineNumber: 257,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                            lineNumber: 227,
+                            lineNumber: 250,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 220,
+                    lineNumber: 243,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-            lineNumber: 184,
+            lineNumber: 198,
             columnNumber: 7
         }, this);
     }
@@ -3880,7 +3894,7 @@ function FlashcardsView({ courseId }) {
                                         children: "Flashcards"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 286,
+                                        lineNumber: 309,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3894,13 +3908,13 @@ function FlashcardsView({ courseId }) {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 287,
+                                        lineNumber: 310,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 285,
+                                lineNumber: 308,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3916,7 +3930,7 @@ function FlashcardsView({ courseId }) {
                                         children: "Review All"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 292,
+                                        lineNumber: 315,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3933,19 +3947,19 @@ function FlashcardsView({ courseId }) {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                            lineNumber: 305,
+                                                            lineNumber: 328,
                                                             columnNumber: 19
                                                         }, this),
                                                         "Generate More"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                    lineNumber: 304,
+                                                    lineNumber: 327,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                lineNumber: 303,
+                                                lineNumber: 326,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogContent"], {
@@ -3956,20 +3970,20 @@ function FlashcardsView({ courseId }) {
                                                                 children: "Generate Flashcards"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                lineNumber: 311,
+                                                                lineNumber: 334,
                                                                 columnNumber: 19
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                                                 children: "Create flashcards from your course materials using AI."
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                lineNumber: 312,
+                                                                lineNumber: 335,
                                                                 columnNumber: 19
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                        lineNumber: 310,
+                                                        lineNumber: 333,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3982,7 +3996,7 @@ function FlashcardsView({ courseId }) {
                                                                         children: "Topic (optional)"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                        lineNumber: 318,
+                                                                        lineNumber: 341,
                                                                         columnNumber: 21
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -3993,13 +4007,13 @@ function FlashcardsView({ courseId }) {
                                                                         className: "mt-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                        lineNumber: 319,
+                                                                        lineNumber: 342,
                                                                         columnNumber: 21
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                lineNumber: 317,
+                                                                lineNumber: 340,
                                                                 columnNumber: 19
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4009,7 +4023,7 @@ function FlashcardsView({ courseId }) {
                                                                         children: "Number of flashcards"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                        lineNumber: 328,
+                                                                        lineNumber: 351,
                                                                         columnNumber: 21
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -4022,13 +4036,13 @@ function FlashcardsView({ courseId }) {
                                                                         className: "mt-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                        lineNumber: 329,
+                                                                        lineNumber: 352,
                                                                         columnNumber: 21
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                lineNumber: 327,
+                                                                lineNumber: 350,
                                                                 columnNumber: 19
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4041,7 +4055,7 @@ function FlashcardsView({ courseId }) {
                                                                             className: "h-4 w-4 mr-2 animate-spin"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                            lineNumber: 346,
+                                                                            lineNumber: 369,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "Generating..."
@@ -4052,7 +4066,7 @@ function FlashcardsView({ courseId }) {
                                                                             className: "h-4 w-4 mr-2"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                            lineNumber: 351,
+                                                                            lineNumber: 374,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         "Generate Flashcards"
@@ -4060,37 +4074,37 @@ function FlashcardsView({ courseId }) {
                                                                 }, void 0, true)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                                lineNumber: 339,
+                                                                lineNumber: 362,
                                                                 columnNumber: 19
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                        lineNumber: 316,
+                                                        lineNumber: 339,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 332,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 302,
+                                        lineNumber: 325,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 291,
+                                lineNumber: 314,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 284,
+                        lineNumber: 307,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4101,7 +4115,7 @@ function FlashcardsView({ courseId }) {
                                 children: "Filter:"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 364,
+                                lineNumber: 387,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4115,7 +4129,7 @@ function FlashcardsView({ courseId }) {
                                 children: "All"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 365,
+                                lineNumber: 388,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4129,7 +4143,7 @@ function FlashcardsView({ courseId }) {
                                 children: "Easy"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 376,
+                                lineNumber: 399,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4143,7 +4157,7 @@ function FlashcardsView({ courseId }) {
                                 children: "Medium"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 387,
+                                lineNumber: 410,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4157,13 +4171,13 @@ function FlashcardsView({ courseId }) {
                                 children: "Hard"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 398,
+                                lineNumber: 421,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 363,
+                        lineNumber: 386,
                         columnNumber: 9
                     }, this),
                     currentFlashcard && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4174,14 +4188,14 @@ function FlashcardsView({ courseId }) {
                                 children: currentFlashcard.lastReviewQuality >= 4 ? "Easy" : currentFlashcard.lastReviewQuality === 3 ? "Medium" : "Hard"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 414,
+                                lineNumber: 437,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "px-2.5 py-1 rounded-md font-medium bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400",
                                 children: "Not Reviewed"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 424,
+                                lineNumber: 447,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -4192,19 +4206,19 @@ function FlashcardsView({ courseId }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 428,
+                                lineNumber: 451,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 412,
+                        lineNumber: 435,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                lineNumber: 283,
+                lineNumber: 306,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4223,7 +4237,7 @@ function FlashcardsView({ courseId }) {
                                         children: "Question"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 443,
+                                        lineNumber: 466,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4240,18 +4254,18 @@ function FlashcardsView({ courseId }) {
                                             className: "h-4 w-4 text-destructive"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 455,
+                                            lineNumber: 478,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 444,
+                                        lineNumber: 467,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 442,
+                                lineNumber: 465,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4261,12 +4275,12 @@ function FlashcardsView({ courseId }) {
                                     children: currentFlashcard?.question
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                    lineNumber: 459,
+                                    lineNumber: 482,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 458,
+                                lineNumber: 481,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4274,13 +4288,13 @@ function FlashcardsView({ courseId }) {
                                 children: "Click to reveal answer"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 461,
+                                lineNumber: 484,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 441,
+                        lineNumber: 464,
                         columnNumber: 13
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "absolute inset-0 p-8 flex flex-col",
@@ -4293,7 +4307,7 @@ function FlashcardsView({ courseId }) {
                                         children: "Answer"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 468,
+                                        lineNumber: 491,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4308,18 +4322,18 @@ function FlashcardsView({ courseId }) {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                            lineNumber: 478,
+                                            lineNumber: 501,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 469,
+                                        lineNumber: 492,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 467,
+                                lineNumber: 490,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4329,12 +4343,12 @@ function FlashcardsView({ courseId }) {
                                     children: currentFlashcard?.answer
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                    lineNumber: 482,
+                                    lineNumber: 505,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 481,
+                                lineNumber: 504,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4353,14 +4367,14 @@ function FlashcardsView({ courseId }) {
                                                 className: "h-4 w-4 text-red-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                lineNumber: 494,
+                                                lineNumber: 517,
                                                 columnNumber: 19
                                             }, this),
                                             "Hard"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 485,
+                                        lineNumber: 508,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4374,7 +4388,7 @@ function FlashcardsView({ courseId }) {
                                         children: "Medium"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 497,
+                                        lineNumber: 520,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -4390,46 +4404,46 @@ function FlashcardsView({ courseId }) {
                                                 className: "h-4 w-4 text-green-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                                lineNumber: 517,
+                                                lineNumber: 540,
                                                 columnNumber: 19
                                             }, this),
                                             "Easy"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                        lineNumber: 508,
+                                        lineNumber: 531,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                                lineNumber: 484,
+                                lineNumber: 507,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                        lineNumber: 466,
+                        lineNumber: 489,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                    lineNumber: 436,
+                    lineNumber: 459,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-                lineNumber: 435,
+                lineNumber: 458,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(main)/courses/flashcards-view.tsx",
-        lineNumber: 282,
+        lineNumber: 305,
         columnNumber: 5
     }, this);
 }
-_s(FlashcardsView, "v+m50Bhr37xfviWsb6WXv3rs8fs=", false, function() {
+_s(FlashcardsView, "P8ZmmD/m0VIUtvRWAwKM0mqms3o=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useQuery"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMutation"],
@@ -4594,10 +4608,10 @@ function ExamGeneratorView({ courseId }) {
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "h-full flex flex-col p-6",
+        className: "h-full flex flex-col overflow-hidden p-6",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "mb-6",
+                className: "mb-6 flex-shrink-0",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                         className: "text-lg font-semibold mb-2",
@@ -4622,7 +4636,7 @@ function ExamGeneratorView({ courseId }) {
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                className: "p-6 mb-6",
+                className: "p-6 mb-6 flex-shrink-0",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                         className: "font-semibold mb-4",
@@ -4779,9 +4793,10 @@ function ExamGeneratorView({ courseId }) {
                 columnNumber: 7
             }, this),
             workflows && workflows.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex-1 flex flex-col min-h-0 overflow-hidden",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                        className: "font-semibold mb-4",
+                        className: "font-semibold mb-4 flex-shrink-0",
                         children: "Generated Exams"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/courses/exam-generator-view.tsx",
@@ -4789,7 +4804,7 @@ function ExamGeneratorView({ courseId }) {
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-3",
+                        className: "flex-1 overflow-y-auto space-y-3 pr-2",
                         children: workflows.map((workflow)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                                 className: `p-4 ${workflow.status === "completed" ? "cursor-pointer hover:bg-muted/50 transition-colors" : ""}`,
                                 onClick: ()=>workflow.status === "completed" && setViewingWorkflowId(workflow._id),

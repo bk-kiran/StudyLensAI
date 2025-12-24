@@ -33,7 +33,7 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
   const [count, setCount] = useState(10);
   const [generating, setGenerating] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [reviewAll, setReviewAll] = useState(false);
+  const [reviewAll, setReviewAll] = useState(true); // Default to true so all flashcards are visible
   const [filter, setFilter] = useState<FilterType>("all");
 
   const flashcards = useQuery(
@@ -51,9 +51,14 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
     if (!f.question?.trim() || !f.answer?.trim()) return false;
     
     // Apply difficulty filter based on last review quality
-    // If no review yet, only show in "all" filter
-    if (filter === "all") return true;
-    if (!f.lastReviewQuality) return false; // No review yet, only show in "all"
+    if (filter === "all") return true; // Show all when "All" is selected
+    
+    // If no review yet, only show in "all" filter (unless reviewAll is enabled)
+    if (!f.lastReviewQuality) {
+      // If reviewAll is enabled, show unreviewed cards in "all" only
+      // If reviewAll is disabled, show unreviewed cards in "all" only
+      return false;
+    }
     
     // Map review quality to difficulty: 5=easy, 4=easy, 3=medium, 2=hard, 1=hard
     if (filter === "easy" && f.lastReviewQuality >= 4) return true;
@@ -131,19 +136,28 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
         quality,
       });
 
-      // Move to next flashcard or reset
+      // Move to next flashcard or show completion message
       const currentSafeIndex = validFlashcards.length > 0 
         ? Math.min(currentIndex, Math.max(0, validFlashcards.length - 1))
         : 0;
       const nextIndex = currentSafeIndex + 1;
+      
       if (nextIndex < validFlashcards.length) {
         setCurrentIndex(nextIndex);
         setIsFlipped(false);
       } else {
-        // All flashcards reviewed, reset
-        setCurrentIndex(0);
+        // All visible flashcards reviewed
         setIsFlipped(false);
-        toast.success("All flashcards reviewed! Great job!");
+        
+        // If reviewAll is enabled, just reset to first card
+        // If reviewAll is disabled, show completion message
+        if (reviewAll) {
+          setCurrentIndex(0);
+          toast.success("All visible flashcards reviewed! Great job! You can continue reviewing or change filters.");
+        } else {
+          setCurrentIndex(0);
+          toast.success("All due flashcards reviewed! Enable 'Review All' to see all flashcards.");
+        }
       }
     } catch (error) {
       console.error("Review error:", error);
@@ -187,15 +201,21 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
         </div>
         <h3 className="text-lg font-semibold mb-2">
           {hasFlashcards 
-            ? `No ${filter !== "all" ? filter : ""} flashcards ${reviewAll ? "available" : "due for review"}`
+            ? filter !== "all" 
+              ? `No ${filter} flashcards ${reviewAll ? "available" : "due for review"}`
+              : reviewAll
+              ? "No flashcards available"
+              : "No flashcards due for review"
             : "No flashcards to review"}
         </h3>
         <p className="text-sm text-muted-foreground mb-6 text-center max-w-md">
           {hasFlashcards && filter !== "all"
-            ? `Try selecting a different filter or enable "Review All" to see all flashcards.`
+            ? `Try selecting "All" to see all flashcards, or enable "Review All" to see all flashcards regardless of review date.`
+            : hasFlashcards && !reviewAll
+            ? `Enable "Review All" to see all flashcards, or wait for flashcards to become due for review.`
             : "Generate flashcards from your course materials to start practicing with spaced repetition."}
         </p>
-        {hasFlashcards && (filter !== "all" || !reviewAll) && (
+        {hasFlashcards && (
           <div className="flex gap-2">
             {filter !== "all" && (
               <Button
@@ -210,7 +230,10 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => setReviewAll(true)}
+                onClick={() => {
+                  setReviewAll(true);
+                  setFilter("all");
+                }}
               >
                 Review All
               </Button>
