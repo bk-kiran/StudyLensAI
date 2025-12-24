@@ -94,6 +94,70 @@ Guidelines:
 - When course materials are provided, cite specific sources and quote relevant passages
 - If the question cannot be fully answered from the materials, acknowledge what you can answer from the materials and what requires general knowledge
 
+FORMATTING REQUIREMENTS (CRITICAL - YOUR RESPONSE WILL BE REJECTED IF NOT FOLLOWED):
+You MUST format your responses using markdown. This is not optional. Your responses MUST be visually scannable and easy to read.
+
+CRITICAL RULES - FOLLOW THESE EXACTLY:
+
+1. NEVER write paragraphs longer than 3 sentences. If you find yourself writing a 4th sentence, immediately start a new paragraph with a double line break.
+
+2. ALWAYS use markdown headings for sections:
+   - Use ## for main topics (e.g., "## Introduction to SQL", "## Key Concepts")
+   - Use ### for subtopics (e.g., "### Creating Tables", "### Data Types")
+   - NEVER write "1. Topic Name" - ALWAYS write "## Topic Name" instead
+   - NEVER write "a. Subtopic" - ALWAYS write "### Subtopic" instead
+
+3. ALWAYS use bullet points (-) when listing items, features, or concepts (even if only 2-3 items):
+   Example: Instead of "SQL includes Data Definition, Data Manipulation, and Data Retrieval."
+   Write: 
+   - **Data Definition**: Creating structures
+   - **Data Manipulation**: Modifying data
+   - **Data Retrieval**: Querying data
+
+4. ALWAYS use numbered lists (1. 2. 3.) for step-by-step processes or sequences.
+
+5. ALWAYS wrap code examples in code blocks using triple backticks (\`\`\`):
+   \`\`\`
+   CREATE TABLE Customer (...);
+   \`\`\`
+   Never write code inline without code blocks.
+
+6. Add TWO blank lines between EVERY paragraph and section.
+
+7. Use **bold** for important terms on first mention.
+
+EXAMPLE OF CORRECT OUTPUT:
+
+## Structured Query Language (SQL)
+
+SQL stands for Structured Query Language. It is used to manage and manipulate databases effectively.
+
+## Key Components
+
+SQL includes three main types of statements:
+
+- **Data Definition Statements**: Used for creating database structures
+- **Data Manipulation Statements**: Used for inserting and updating data
+- **Data Retrieval Statements**: Used for querying data with SELECT
+
+## Creating Tables
+
+To create a table, use the CREATE TABLE statement:
+
+\`\`\`
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100)
+);
+\`\`\`
+
+This creates a table with two columns. The CustomerID is the primary key.
+
+EXAMPLE OF INCORRECT OUTPUT (NEVER DO THIS):
+SQL stands for Structured Query Language. It is used to manage and manipulate databases effectively. SQL includes Data Definition Statements which are used for creating database structures, Data Manipulation Statements for inserting and updating data, and Data Retrieval Statements for querying data with SELECT. To create a table, use CREATE TABLE Customer (CustomerID INT PRIMARY KEY, Name VARCHAR(100)); which creates a table with two columns where CustomerID is the primary key.
+
+YOUR RESPONSE MUST LOOK LIKE THE FIRST EXAMPLE, NOT THE SECOND.
+
 Your goal is to enhance the student's learning experience and help them achieve academic success.`;
 
         // Detect if user wants "all content" (for summaries, study guides, etc.)
@@ -282,16 +346,10 @@ Politely inform the user that they need to upload PDF files to this course first
         console.log(`Number of messages: ${modelMessages.length}`);
 
         try {
-            // Increase maxTokens for generation modes that need longer responses
-            const maxTokens = generateMode === "flashcards" || generateMode === "study-guide" || generateMode === "summary" 
-                ? 4000 
-                : 2000;
-
             const result = streamText({
                 model: openai("gpt-4o-mini"),
                 system: systemPrompt,
                 messages: modelMessages,
-                maxTokens: maxTokens,
                 onError(error) {
                     console.error("streamText error: ", error);
                     // Log more details about the error

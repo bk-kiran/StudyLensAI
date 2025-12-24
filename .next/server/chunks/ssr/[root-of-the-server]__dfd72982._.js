@@ -1759,14 +1759,19 @@ if ("TURBOPACK compile-time falsy", 0) {
 }
 async function extractTextFromPDF(file) {
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$pdfjs$2d$dist$2f$build$2f$pdf$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__.getDocument({
+    const pdf = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$pdfjs$2d$dist$2f$build$2f$pdf$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["getDocument"])({
         data: arrayBuffer
     }).promise;
     let text = "";
     for(let i = 1; i <= pdf.numPages; i++){
         const page = await pdf.getPage(i);
         const content = await page.getTextContent();
-        text += content.items.map((item)=>item.str).join(" ") + "\n\n";
+        text += content.items.map((item)=>{
+            if ('str' in item) {
+                return item.str;
+            }
+            return '';
+        }).join(" ") + "\n\n";
     }
     return text;
 }
@@ -2109,6 +2114,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/send.js [app-ssr] (ecmascript) <export default as Send>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-ssr] (ecmascript) <export default as Sparkles>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash.js [app-ssr] (ecmascript) <export default as Trash>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/book-open.js [app-ssr] (ecmascript) <export default as BookOpen>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$help$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HelpCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-help.js [app-ssr] (ecmascript) <export default as HelpCircle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lightbulb$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Lightbulb$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/lightbulb.js [app-ssr] (ecmascript) <export default as Lightbulb>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2d$checks$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ListChecks$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/list-checks.js [app-ssr] (ecmascript) <export default as ListChecks>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$question$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileQuestion$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-question.js [app-ssr] (ecmascript) <export default as FileQuestion>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$ai$2d$sdk$2f$react$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@ai-sdk/react/dist/index.mjs [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@convex-dev/auth/dist/react/index.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$ai$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/ai/dist/index.mjs [app-ssr] (ecmascript) <locals>");
@@ -2116,7 +2126,9 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$markdow
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$module__evaluation$3e$__ = __turbopack_context__.i("[project]/node_modules/convex/dist/esm/react/index.js [app-ssr] (ecmascript) <module evaluation>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/convex/dist/esm/react/client.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/convex/_generated/api.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/dropdown-menu.tsx [app-ssr] (ecmascript)");
 "use client";
+;
 ;
 ;
 ;
@@ -2136,99 +2148,236 @@ const MODE_PROMPTS = {
     "flashcards": "Generate flashcards with questions and answers from the materials",
     "explain": "Explain a specific concept in detail"
 };
+const AUTO_GENERATE_PROMPTS = {
+    "practice-questions": "Generate practice questions based on all the course materials. Create questions that test understanding of key concepts, vary in difficulty (easy, medium, hard), and include both multiple-choice and open-ended questions. Provide answers and explanations.",
+    "summary": "Create a comprehensive summary of all the course materials. Organize the summary by topics, highlight key points, and ensure it covers all important concepts from the materials.",
+    "key-concepts": "Extract and explain the key concepts from all the course materials. List each concept clearly, provide definitions, and explain their importance and relationships.",
+    "study-guide": "Create a detailed study guide covering all important topics from all the course materials. Organize it by chapters or themes, include key points, definitions, and important examples.",
+    "flashcards": "Generate flashcards with questions and answers from all the course materials. Format them clearly with the question on one side and the answer on the other. Cover a variety of topics.",
+    "explain": "Please explain the key concepts from all the course materials in detail. Break them down into understandable parts, use examples from the materials, and relate them to other concepts when relevant."
+};
+const GENERATE_MODES = [
+    {
+        id: "practice-questions",
+        label: "Practice Questions",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$question$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileQuestion$3e$__["FileQuestion"]
+    },
+    {
+        id: "summary",
+        label: "Summary",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__["BookOpen"]
+    },
+    {
+        id: "key-concepts",
+        label: "Key Concepts",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lightbulb$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Lightbulb$3e$__["Lightbulb"]
+    },
+    {
+        id: "study-guide",
+        label: "Study Guide",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2d$checks$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ListChecks$3e$__["ListChecks"]
+    },
+    {
+        id: "flashcards",
+        label: "Flashcards",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"]
+    },
+    {
+        id: "explain",
+        label: "Explain Concept",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$help$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HelpCircle$3e$__["HelpCircle"]
+    }
+];
 const convexSiteUrl = ("TURBOPACK compile-time value", "https://cool-wolf-57.convex.cloud")?.replace(/.cloud$/, ".site");
 function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
     const token = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$convex$2d$dev$2f$auth$2f$dist$2f$react$2f$index$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useAuthToken"])();
+    const tokenRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(token);
+    tokenRef.current = token; // Keep ref in sync
     const messagesEndRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
     const [input, setInput] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
     const hasLoadedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
     const savedMessageIdsRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(new Set());
+    const currentGenerateModeRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const modeSelectInProgressRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
     // Fetch chat history from Convex
     const savedMessages = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useQuery"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].chatMessages.getChatMessages, courseId ? {
         courseId
     } : "skip");
     const saveChatMessage = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].chatMessages.saveChatMessage);
     const clearHistory = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$convex$2f$dist$2f$esm$2f$react$2f$client$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMutation"])(__TURBOPACK__imported__module__$5b$project$5d2f$convex$2f$_generated$2f$api$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["api"].chatMessages.clearChatHistory);
-    const { messages, sendMessage, status, setMessages } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$ai$2d$sdk$2f$react$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useChat"])({
-        transport: new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$ai$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["DefaultChatTransport"]({
+    // Memoize the fetch function to prevent transport recreation
+    // Use refs for courseId and generateMode to avoid recreating on every change
+    const courseIdRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(courseId);
+    courseIdRef.current = courseId;
+    const customFetch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])(async (input, init)=>{
+        // Intercept and modify the request body to include courseId and generateMode
+        const options = init || {};
+        if (options.body) {
+            try {
+                const body = JSON.parse(options.body);
+                body.courseId = courseIdRef.current;
+                // Use ref value (always up-to-date)
+                body.generateMode = currentGenerateModeRef.current;
+                options.body = JSON.stringify(body);
+            } catch (e) {
+                console.error("Failed to modify request body:", e);
+            }
+        }
+        try {
+            const response = await fetch(input, options);
+            // Check if response is ok
+            if (!response.ok) {
+                const errorData = await response.json().catch(()=>({}));
+                console.error("Fetch error:", response.status, errorData);
+                throw new Error(errorData.error || `Request failed with status ${response.status}`);
+            }
+            return response;
+        } catch (fetchError) {
+            console.error("Network error:", fetchError);
+            throw fetchError;
+        }
+    }, []); // Empty deps - we use refs for all values
+    // Memoize the transport to prevent useChat from resetting
+    // Use ref for token to prevent recreation on every token change
+    const transport = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useMemo"])(()=>{
+        const currentToken = tokenRef.current;
+        return new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$ai$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["DefaultChatTransport"]({
             api: `${convexSiteUrl}/api/chat`,
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${currentToken}`
             },
-            fetch: async (url, options)=>{
-                // Intercept and modify the request body to include courseId and generateMode
-                if (options?.body) {
-                    try {
-                        const body = JSON.parse(options.body);
-                        body.courseId = courseId;
-                        body.generateMode = generateMode;
-                        options.body = JSON.stringify(body);
-                    } catch (e) {
-                        console.error("Failed to modify request body:", e);
-                    }
-                }
-                return fetch(url, options);
-            }
-        })
+            fetch: customFetch
+        });
+    }, [
+        customFetch
+    ]); // Only recreate if customFetch changes (which it shouldn't)
+    const { messages, sendMessage, status, setMessages, error } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$ai$2d$sdk$2f$react$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useChat"])({
+        transport,
+        onError: (err)=>{
+            console.error("Chat error:", err);
+        }
     });
     const isProcessing = status === "submitted" || status === "streaming";
     // Load chat history once when data is available
+    const hasInitializedRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const isInitializingRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const initializedCountRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (savedMessages !== undefined && !hasLoadedRef.current) {
-            hasLoadedRef.current = true;
-            if (Array.isArray(savedMessages) && savedMessages.length > 0) {
-                const formattedMessages = savedMessages.map((msg, idx)=>({
-                        id: `${msg._id}-${idx}`,
-                        role: msg.role,
-                        parts: [
-                            {
-                                type: "text",
-                                text: msg.content
-                            }
-                        ]
-                    }));
+        // Only process once when data becomes available
+        if (savedMessages === undefined) return;
+        if (hasInitializedRef.current) return; // CRITICAL: Never re-initialize after first load
+        if (isInitializingRef.current) return; // Prevent concurrent initialization
+        const messageCount = Array.isArray(savedMessages) ? savedMessages.length : 0;
+        // Only initialize if we haven't initialized yet
+        // Once initialized, ignore all future savedMessages updates (they come from our own saves)
+        if (hasInitializedRef.current) return;
+        isInitializingRef.current = true;
+        hasInitializedRef.current = true;
+        hasLoadedRef.current = true;
+        initializedCountRef.current = messageCount;
+        if (Array.isArray(savedMessages) && savedMessages.length > 0) {
+            const formattedMessages = savedMessages.map((msg, idx)=>({
+                    id: `${msg._id}-${idx}`,
+                    role: msg.role,
+                    parts: [
+                        {
+                            type: "text",
+                            text: msg.content
+                        }
+                    ]
+                }));
+            // Track all loaded message IDs to prevent duplicates
+            savedMessages.forEach((msg)=>{
+                const messageKey = `${msg.role}-${msg.content}`;
+                savedMessageIdsRef.current.add(messageKey);
+            });
+            // Use requestAnimationFrame to defer setMessages and prevent immediate re-render loops
+            requestAnimationFrame(()=>{
                 setMessages(formattedMessages);
-                // Track all loaded message IDs to prevent duplicates
-                savedMessages.forEach((msg)=>{
-                    const messageKey = `${msg.role}-${msg.content}`;
-                    savedMessageIdsRef.current.add(messageKey);
-                });
-            }
+                // Update prevMessagesLengthRef to match loaded messages
+                prevMessagesLengthRef.current = formattedMessages.length;
+                lastProcessedLengthRef.current = formattedMessages.length;
+                isInitializingRef.current = false;
+            });
+        } else {
+            isInitializingRef.current = false;
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        savedMessages,
-        setMessages
-    ]);
+        savedMessages
+    ]); // setMessages is stable from useChat, don't include it
     // Save new messages to Convex
     const prevMessagesLengthRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const isSavingRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(false);
+    const messagesRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(messages);
+    const lastProcessedLengthRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(0);
+    const saveTimeoutRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRef"])(null);
+    // CRITICAL: Track if we're in the initial load phase to prevent save loop
+    // After initialization, we ignore savedMessages updates (they come from our own saves)
+    // Keep messages ref in sync without triggering effects
+    messagesRef.current = messages;
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (hasLoadedRef.current && courseId && messages.length > prevMessagesLengthRef.current) {
-            // Get all new messages since last save
-            const newMessages = messages.slice(prevMessagesLengthRef.current);
-            newMessages.forEach((message)=>{
-                const lastPart = message.parts[message.parts.length - 1];
-                if (lastPart?.type === "text" && message.role) {
-                    const messageKey = `${message.role}-${lastPart.text}`;
-                    // Only save if we haven't saved this exact message before
-                    if (!savedMessageIdsRef.current.has(messageKey)) {
-                        savedMessageIdsRef.current.add(messageKey);
-                        // For user messages, save immediately
-                        // For assistant messages, only save when complete (status is ready)
-                        if (message.role === "user" || status === "ready") {
-                            saveChatMessage({
-                                courseId,
-                                role: message.role,
-                                content: lastPart.text
-                            }).catch(console.error);
+        // Only process if we've loaded initial messages and have a courseId
+        if (!hasLoadedRef.current || !courseId) return;
+        if (isInitializingRef.current) return; // Don't save during initialization
+        if (isSavingRef.current) return; // Prevent concurrent saves
+        if (modeSelectInProgressRef.current) return; // Don't save immediately after mode select
+        // CRITICAL: During streaming, messages update continuously causing infinite loops
+        // COMPLETELY DISABLE saving during streaming - we'll save everything when ready
+        const isStreaming = status === "submitted" || status === "streaming";
+        if (isStreaming) {
+            // During streaming, DO NOTHING - completely skip all processing
+            // This prevents infinite loops from continuous message updates
+            return;
+        }
+        // Only process when status is "ready" (streaming complete)
+        if (status !== "ready") return;
+        const currentMessages = messagesRef.current;
+        const currentLength = currentMessages.length;
+        const prevLength = prevMessagesLengthRef.current;
+        // Only process if there are new messages and we haven't processed this length yet
+        if (currentLength <= prevLength || currentLength === lastProcessedLengthRef.current) {
+            return;
+        }
+        // Get all new messages since last save
+        const newMessages = currentMessages.slice(prevLength);
+        if (newMessages.length === 0) {
+            lastProcessedLengthRef.current = currentLength;
+            return;
+        }
+        // Mark this length as being processed immediately
+        lastProcessedLengthRef.current = currentLength;
+        // Save all new messages when streaming is complete
+        const saveAllMessages = async ()=>{
+            if (isSavingRef.current) return;
+            isSavingRef.current = true;
+            try {
+                for (const message of newMessages){
+                    const lastPart = message.parts[message.parts.length - 1];
+                    if (lastPart?.type === "text" && message.role) {
+                        const messageKey = `${message.role}-${lastPart.text}`;
+                        if (!savedMessageIdsRef.current.has(messageKey)) {
+                            savedMessageIdsRef.current.add(messageKey);
+                            try {
+                                await saveChatMessage({
+                                    courseId,
+                                    role: message.role,
+                                    content: lastPart.text
+                                });
+                            } catch (error) {
+                                console.error("Failed to save message:", error);
+                            }
                         }
                     }
                 }
-            });
-            // Update the counter only when status is ready (conversation complete)
-            if (status === "ready") {
-                prevMessagesLengthRef.current = messages.length;
+                // Update the counter when complete
+                prevMessagesLengthRef.current = currentLength;
+            } finally{
+                isSavingRef.current = false;
             }
-        }
+        };
+        // Save immediately when ready (not streaming)
+        saveAllMessages();
     }, [
         messages.length,
         status,
@@ -2249,6 +2398,11 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
         if (generateMode) {
             const modePrompt = MODE_PROMPTS[generateMode];
             messageToSend = `${modePrompt}: ${messageToSend}`;
+            currentGenerateModeRef.current = generateMode;
+        } else {
+            currentGenerateModeRef.current = null;
+        }
+        if (generateMode) {
             onModeChange(null);
         }
         sendMessage({
@@ -2256,6 +2410,32 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
         });
         setInput("");
     };
+    const handleModeSelect = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCallback"])((mode)=>{
+        if (!mode || isProcessing || modeSelectInProgressRef.current) return;
+        modeSelectInProgressRef.current = true;
+        // Set the mode in ref first (before any state updates)
+        currentGenerateModeRef.current = mode;
+        // Automatically send a message to generate the content
+        const autoPrompt = AUTO_GENERATE_PROMPTS[mode];
+        // Send the message immediately - the fetch interceptor will read from the ref
+        sendMessage({
+            text: autoPrompt
+        });
+        // Update parent state after a brief delay to avoid immediate re-render
+        setTimeout(()=>{
+            onModeChange(mode);
+            // Clear the mode after fetch has captured it
+            setTimeout(()=>{
+                currentGenerateModeRef.current = null;
+                onModeChange(null);
+                modeSelectInProgressRef.current = false;
+            }, 1500); // Increased delay to ensure fetch has completed
+        }, 100);
+    }, [
+        isProcessing,
+        sendMessage,
+        onModeChange
+    ]);
     const handleKeyPress = (e)=>{
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -2286,7 +2466,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                         className: "h-8 w-8 text-primary animate-pulse"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                        lineNumber: 199,
+                        lineNumber: 374,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2294,18 +2474,18 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                         children: "Loading chat history..."
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                        lineNumber: 200,
+                        lineNumber: 375,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                lineNumber: 198,
+                lineNumber: 373,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-            lineNumber: 197,
+            lineNumber: 372,
             columnNumber: 7
         }, this);
     }
@@ -2331,12 +2511,12 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                 className: "h-7 w-7 text-primary"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 213,
+                                lineNumber: 388,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 212,
+                            lineNumber: 387,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2347,7 +2527,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                     children: courseName
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 216,
+                                    lineNumber: 391,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2355,19 +2535,19 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                     children: generateMode ? `I'll help you ${GENERATE_MODES.find((m)=>m.id === generateMode)?.label.toLowerCase()}. Ask me anything about your course materials.` : "Ask me anything about your course materials, or use the Generate button to create study resources."
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 217,
+                                    lineNumber: 392,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 215,
+                            lineNumber: 390,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                    lineNumber: 211,
+                    lineNumber: 386,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "space-y-6",
@@ -2385,12 +2565,12 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                 className: "h-4 w-4 text-primary"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                lineNumber: 237,
+                                                lineNumber: 412,
                                                 columnNumber: 25
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 236,
+                                            lineNumber: 411,
                                             columnNumber: 23
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2399,19 +2579,19 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                 children: currentStep.text
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                lineNumber: 249,
+                                                lineNumber: 424,
                                                 columnNumber: 27
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                 className: "text-sm whitespace-pre-wrap leading-relaxed",
                                                 children: currentStep.text
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                lineNumber: 251,
+                                                lineNumber: 426,
                                                 columnNumber: 27
                                             }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 240,
+                                            lineNumber: 415,
                                             columnNumber: 21
                                         }, this),
                                         msg.role === "user" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2421,23 +2601,23 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                 children: "U"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                lineNumber: 257,
+                                                lineNumber: 432,
                                                 columnNumber: 25
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 256,
+                                            lineNumber: 431,
                                             columnNumber: 23
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 234,
+                                    lineNumber: 409,
                                     columnNumber: 19
                                 }, this)
                             }, msg.id, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 230,
+                                lineNumber: 405,
                                 columnNumber: 17
                             }, this);
                         }),
@@ -2452,12 +2632,12 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                             className: "h-4 w-4 text-primary animate-pulse"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 268,
+                                            lineNumber: 443,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                        lineNumber: 267,
+                                        lineNumber: 442,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2472,7 +2652,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                    lineNumber: 272,
+                                                    lineNumber: 447,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2482,7 +2662,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                    lineNumber: 273,
+                                                    lineNumber: 448,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2492,29 +2672,29 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                                    lineNumber: 274,
+                                                    lineNumber: 449,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 271,
+                                            lineNumber: 446,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                        lineNumber: 270,
+                                        lineNumber: 445,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 266,
+                                lineNumber: 441,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 265,
+                            lineNumber: 440,
                             columnNumber: 15
                         }, this),
                         status === "error" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2528,56 +2708,80 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                             className: "h-4 w-4 text-destructive"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 284,
+                                            lineNumber: 459,
                                             columnNumber: 21
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                        lineNumber: 283,
+                                        lineNumber: 458,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "rounded-2xl p-4 bg-destructive/10 border border-destructive/20",
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm text-destructive",
-                                            children: "Something went wrong. Please try again."
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                            lineNumber: 287,
-                                            columnNumber: 21
-                                        }, this)
-                                    }, void 0, false, {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm text-destructive",
+                                                children: error?.message || "Something went wrong while generating the response. This might be due to a timeout or network issue. Please try again."
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                                lineNumber: 462,
+                                                columnNumber: 21
+                                            }, this),
+                                            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                                variant: "ghost",
+                                                size: "sm",
+                                                onClick: ()=>{
+                                                    // Retry the last message if possible
+                                                    const lastUserMessage = messages.filter((m)=>m.role === "user").slice(-1)[0];
+                                                    if (lastUserMessage) {
+                                                        const lastPart = lastUserMessage.parts[lastUserMessage.parts.length - 1];
+                                                        if (lastPart?.type === "text") {
+                                                            sendMessage({
+                                                                text: lastPart.text
+                                                            });
+                                                        }
+                                                    }
+                                                },
+                                                className: "mt-2 text-xs h-7",
+                                                children: "Retry"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                                lineNumber: 466,
+                                                columnNumber: 23
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                        lineNumber: 286,
+                                        lineNumber: 461,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 282,
+                                lineNumber: 457,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 281,
+                            lineNumber: 456,
                             columnNumber: 15
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             ref: messagesEndRef
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 292,
+                            lineNumber: 488,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                    lineNumber: 225,
+                    lineNumber: 400,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                lineNumber: 209,
+                lineNumber: 384,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2590,7 +2794,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                 className: "h-3.5 w-3.5 text-primary flex-shrink-0"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 301,
+                                lineNumber: 497,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2598,7 +2802,7 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                 children: GENERATE_MODES.find((m)=>m.id === generateMode)?.label
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 302,
+                                lineNumber: 498,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2609,13 +2813,13 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                 children: "×"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 305,
+                                lineNumber: 501,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                        lineNumber: 300,
+                        lineNumber: 496,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2630,19 +2834,19 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                     className: "h-3.5 w-3.5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 323,
+                                    lineNumber: 519,
                                     columnNumber: 15
                                 }, this),
                                 "Clear History"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                            lineNumber: 317,
+                            lineNumber: 513,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                        lineNumber: 315,
+                        lineNumber: 511,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -2660,12 +2864,76 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                     className: "w-full h-auto min-h-[44px] sm:min-h-[48px] py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl border-2 focus:border-primary/50 text-sm sm:text-base"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 330,
+                                    lineNumber: 526,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 329,
+                                lineNumber: 525,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenu"], {
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuTrigger"], {
+                                        asChild: true,
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                            type: "button",
+                                            variant: "outline",
+                                            size: "icon",
+                                            disabled: isProcessing,
+                                            className: "h-11 w-11 sm:h-12 sm:w-12 rounded-xl flex-shrink-0 border-2",
+                                            title: "Generate content",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
+                                                className: "h-4 w-4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                                lineNumber: 549,
+                                                columnNumber: 17
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                            lineNumber: 541,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                        lineNumber: 540,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
+                                        align: "end",
+                                        className: "w-56",
+                                        children: GENERATE_MODES.map((mode)=>{
+                                            const Icon = mode.icon;
+                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
+                                                onClick: ()=>handleModeSelect(mode.id),
+                                                className: "gap-2",
+                                                disabled: isProcessing,
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
+                                                        className: "h-4 w-4"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                                        lineNumber: 562,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    mode.label
+                                                ]
+                                            }, mode.id, true, {
+                                                fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                                lineNumber: 556,
+                                                columnNumber: 19
+                                            }, this);
+                                        })
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                        lineNumber: 552,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
+                                lineNumber: 539,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2677,59 +2945,33 @@ function CourseAIChatBox({ courseName, courseId, generateMode, onModeChange }) {
                                     className: "h-4 w-4"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                    lineNumber: 349,
+                                    lineNumber: 575,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                                lineNumber: 343,
+                                lineNumber: 569,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                        lineNumber: 328,
+                        lineNumber: 524,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-                lineNumber: 298,
+                lineNumber: 494,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(main)/courses/course-ai-chat-box.tsx",
-        lineNumber: 207,
+        lineNumber: 382,
         columnNumber: 5
     }, this);
 }
-const GENERATE_MODES = [
-    {
-        id: "practice-questions",
-        label: "Practice Questions"
-    },
-    {
-        id: "summary",
-        label: "Summary"
-    },
-    {
-        id: "key-concepts",
-        label: "Key Concepts"
-    },
-    {
-        id: "study-guide",
-        label: "Study Guide"
-    },
-    {
-        id: "flashcards",
-        label: "Flashcards"
-    },
-    {
-        id: "explain",
-        label: "Explain Concept"
-    }
-];
 }}),
 "[project]/src/app/(main)/courses/course-files-view.tsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
@@ -2850,7 +3092,7 @@ function CourseFilesView({ course, onBack }) {
             course: course
         }, void 0, false, {
             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-            lineNumber: 76,
+            lineNumber: 75,
             columnNumber: 12
         }, this);
     }
@@ -2889,7 +3131,7 @@ function CourseFilesView({ course, onBack }) {
                                                             children: courseEmoji
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 94,
+                                                            lineNumber: 93,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2902,23 +3144,23 @@ function CourseFilesView({ course, onBack }) {
                                                                 children: course.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 96,
+                                                                lineNumber: 95,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 95,
+                                                            lineNumber: 94,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 93,
+                                                    lineNumber: 92,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 92,
+                                                lineNumber: 91,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2931,18 +3173,18 @@ function CourseFilesView({ course, onBack }) {
                                                     className: "h-3.5 w-3.5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 113,
+                                                    lineNumber: 112,
                                                     columnNumber: 19
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 106,
+                                                lineNumber: 105,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 91,
+                                        lineNumber: 90,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2956,25 +3198,25 @@ function CourseFilesView({ course, onBack }) {
                                                     className: "h-3.5 w-3.5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 123,
+                                                    lineNumber: 122,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: "Upload"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 123,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 118,
+                                            lineNumber: 117,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 116,
                                         columnNumber: 15
                                     }, this),
                                     generateMode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2984,7 +3226,7 @@ function CourseFilesView({ course, onBack }) {
                                                 className: "h-3 w-3 text-primary flex-shrink-0"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 129,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2992,7 +3234,7 @@ function CourseFilesView({ course, onBack }) {
                                                 children: GENERATE_MODES.find((m)=>m.id === generateMode)?.label
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 131,
+                                                lineNumber: 130,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3003,19 +3245,19 @@ function CourseFilesView({ course, onBack }) {
                                                 children: "×"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 134,
+                                                lineNumber: 133,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 129,
+                                        lineNumber: 128,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 90,
+                                lineNumber: 89,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3029,12 +3271,12 @@ function CourseFilesView({ course, onBack }) {
                                                 className: "h-6 w-6 text-primary/60"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 151,
+                                                lineNumber: 150,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 150,
+                                            lineNumber: 149,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -3042,7 +3284,7 @@ function CourseFilesView({ course, onBack }) {
                                             children: "No files yet"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 153,
+                                            lineNumber: 152,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3050,7 +3292,7 @@ function CourseFilesView({ course, onBack }) {
                                             children: "Upload your first PDF"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 154,
+                                            lineNumber: 153,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3063,20 +3305,20 @@ function CourseFilesView({ course, onBack }) {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 163,
+                                                    lineNumber: 162,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Upload"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 157,
+                                            lineNumber: 156,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 149,
+                                    lineNumber: 148,
                                     columnNumber: 17
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-1",
@@ -3092,12 +3334,12 @@ function CourseFilesView({ course, onBack }) {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 169,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 169,
+                                            lineNumber: 168,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3120,12 +3362,12 @@ function CourseFilesView({ course, onBack }) {
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 190,
+                                                                    lineNumber: 189,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 184,
+                                                                lineNumber: 183,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3136,7 +3378,7 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: file.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 193,
+                                                                        lineNumber: 192,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3144,13 +3386,13 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: formatDate(file.uploadDate)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 196,
+                                                                        lineNumber: 195,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 192,
+                                                                lineNumber: 191,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3166,45 +3408,45 @@ function CourseFilesView({ course, onBack }) {
                                                                     className: "h-3 w-3 text-destructive"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 210,
+                                                                    lineNumber: 209,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 200,
+                                                                lineNumber: 199,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 181,
+                                                        lineNumber: 180,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, file._id, false, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 176,
+                                                    lineNumber: 175,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                            lineNumber: 174,
+                                            lineNumber: 173,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 168,
+                                    lineNumber: 167,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 147,
+                                lineNumber: 146,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                        lineNumber: 88,
+                        lineNumber: 87,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3230,12 +3472,12 @@ function CourseFilesView({ course, onBack }) {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 238,
+                                                                lineNumber: 237,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 231,
+                                                            lineNumber: 230,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3247,7 +3489,7 @@ function CourseFilesView({ course, onBack }) {
                                                                     className: "h-4 w-4"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 246,
+                                                                    lineNumber: 245,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3255,20 +3497,20 @@ function CourseFilesView({ course, onBack }) {
                                                                     children: "Back to Courses"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 247,
+                                                                    lineNumber: 246,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 241,
+                                                            lineNumber: 240,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 227,
+                                                lineNumber: 226,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3279,7 +3521,7 @@ function CourseFilesView({ course, onBack }) {
                                                         children: courseEmoji
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 253,
+                                                        lineNumber: 252,
                                                         columnNumber: 17
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3293,7 +3535,7 @@ function CourseFilesView({ course, onBack }) {
                                                                 children: course.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 255,
+                                                                lineNumber: 254,
                                                                 columnNumber: 19
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3301,25 +3543,25 @@ function CourseFilesView({ course, onBack }) {
                                                                 children: course.description || "No description"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 261,
+                                                                lineNumber: 260,
                                                                 columnNumber: 19
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                        lineNumber: 254,
+                                                        lineNumber: 253,
                                                         columnNumber: 17
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                lineNumber: 252,
+                                                lineNumber: 251,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 226,
+                                        lineNumber: 225,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3336,7 +3578,7 @@ function CourseFilesView({ course, onBack }) {
                                                             className: "h-3.5 w-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 274,
+                                                            lineNumber: 273,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3344,13 +3586,13 @@ function CourseFilesView({ course, onBack }) {
                                                             children: "Upload"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 275,
+                                                            lineNumber: 274,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 268,
+                                                    lineNumber: 267,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenu"], {
@@ -3366,7 +3608,7 @@ function CourseFilesView({ course, onBack }) {
                                                                         className: "h-3.5 w-3.5"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 280,
+                                                                        lineNumber: 279,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3374,25 +3616,25 @@ function CourseFilesView({ course, onBack }) {
                                                                         children: "Generate"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 281,
+                                                                        lineNumber: 280,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$down$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronDown$3e$__["ChevronDown"], {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                        lineNumber: 282,
+                                                                        lineNumber: 281,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                lineNumber: 279,
+                                                                lineNumber: 278,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 278,
+                                                            lineNumber: 277,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -3408,39 +3650,39 @@ function CourseFilesView({ course, onBack }) {
                                                                             className: "h-4 w-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                            lineNumber: 294,
+                                                                            lineNumber: 293,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         mode.label
                                                                     ]
                                                                 }, mode.id, true, {
                                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                                    lineNumber: 289,
+                                                                    lineNumber: 288,
                                                                     columnNumber: 27
                                                                 }, this);
                                                             })
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                            lineNumber: 285,
+                                                            lineNumber: 284,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                                    lineNumber: 277,
+                                                    lineNumber: 276,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                        lineNumber: 265,
+                                        lineNumber: 264,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 225,
+                                lineNumber: 224,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3452,24 +3694,24 @@ function CourseFilesView({ course, onBack }) {
                                     onModeChange: setGenerateMode
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 308,
+                                    lineNumber: 307,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 307,
+                                lineNumber: 306,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                        lineNumber: 223,
+                        lineNumber: 222,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                lineNumber: 85,
+                lineNumber: 84,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f28$main$292f$courses$2f$upload$2d$file$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["UploadFileDialog"], {
@@ -3479,7 +3721,7 @@ function CourseFilesView({ course, onBack }) {
                 courseId: course._id
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                lineNumber: 318,
+                lineNumber: 317,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$confirm$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ConfirmDialog"], {
@@ -3493,13 +3735,13 @@ function CourseFilesView({ course, onBack }) {
                 destructive: true
             }, void 0, false, {
                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                lineNumber: 325,
+                lineNumber: 324,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-        lineNumber: 83,
+        lineNumber: 82,
         columnNumber: 5
     }, this);
 }
@@ -3517,14 +3759,14 @@ function LoadingSkeleton({ onBack, course }) {
                             className: "h-8 w-full mb-4"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 353,
+                            lineNumber: 352,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$skeleton$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Skeleton"], {
                             className: "h-6 w-20 mb-2"
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 354,
+                            lineNumber: 353,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3535,18 +3777,18 @@ function LoadingSkeleton({ onBack, course }) {
                                     className: "h-12 w-full rounded-md"
                                 }, i, false, {
                                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                    lineNumber: 357,
+                                    lineNumber: 356,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 355,
+                            lineNumber: 354,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                    lineNumber: 352,
+                    lineNumber: 351,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3558,12 +3800,12 @@ function LoadingSkeleton({ onBack, course }) {
                                 className: "h-6 w-48"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 365,
+                                lineNumber: 364,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 364,
+                            lineNumber: 363,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3572,29 +3814,29 @@ function LoadingSkeleton({ onBack, course }) {
                                 className: "h-full w-full rounded-lg"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                                lineNumber: 368,
+                                lineNumber: 367,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                            lineNumber: 367,
+                            lineNumber: 366,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-                    lineNumber: 363,
+                    lineNumber: 362,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-            lineNumber: 350,
+            lineNumber: 349,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/(main)/courses/course-files-view.tsx",
-        lineNumber: 349,
+        lineNumber: 348,
         columnNumber: 5
     }, this);
 }

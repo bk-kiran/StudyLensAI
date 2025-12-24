@@ -87,6 +87,57 @@ const schema = defineSchema({
         dimensions: 1536, // OpenAI text-embedding-3-small uses 1536 dimensions
         filterFields: ["userId", "courseId"],
     }),
+
+    flashcards: defineTable({
+        courseId: v.id("courses"),
+        userId: v.id("users"),
+        question: v.string(),
+        answer: v.string(),
+        // Spaced repetition fields (SM-2 algorithm)
+        easeFactor: v.number(), // Default 2.5, adjusts based on performance
+        interval: v.number(), // Days until next review
+        repetitions: v.number(), // Number of successful reviews
+        nextReviewDate: v.number(), // Timestamp for next review
+        lastReviewDate: v.optional(v.number()),
+        lastReviewQuality: v.optional(v.number()), // Last review quality (1-5) for display
+        createdAt: v.number(),
+    })
+        .index("by_courseId", ["courseId"])
+        .index("by_userId", ["userId"])
+        .index("by_nextReviewDate", ["nextReviewDate"])
+        .index("by_course_and_review", ["courseId", "nextReviewDate"]),
+
+    examWorkflows: defineTable({
+        courseId: v.id("courses"),
+        userId: v.id("users"),
+        status: v.union(
+            v.literal("analyzing"),
+            v.literal("identifying_topics"),
+            v.literal("generating_questions"),
+            v.literal("completed"),
+            v.literal("failed")
+        ),
+        syllabusAnalysis: v.optional(v.string()),
+        identifiedTopics: v.optional(v.array(v.string())),
+        questions: v.optional(
+            v.array(
+                v.object({
+                    question: v.string(),
+                    type: v.union(v.literal("multiple_choice"), v.literal("short_answer")),
+                    options: v.optional(v.array(v.string())),
+                    correctAnswer: v.string(),
+                    explanation: v.optional(v.string()),
+                    difficulty: v.union(v.literal("easy"), v.literal("medium"), v.literal("hard")),
+                })
+            )
+        ),
+        difficulty: v.optional(v.union(v.literal("easy"), v.literal("medium"), v.literal("hard"), v.literal("mixed"))), // Overall quiz difficulty
+        createdAt: v.number(),
+        completedAt: v.optional(v.number()),
+    })
+        .index("by_courseId", ["courseId"])
+        .index("by_userId", ["userId"])
+        .index("by_status", ["status"]),
 });
 
 export default schema;

@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Upload, FileText, Trash2, Bot, ChevronDown, Sparkles, BookOpen, HelpCircle, Lightbulb, ListChecks, FileQuestion, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Upload, FileText, Trash2, Bot, ChevronDown, Sparkles, BookOpen, HelpCircle, Lightbulb, ListChecks, FileQuestion, ChevronLeft, ChevronRight, Layers, GraduationCap } from "lucide-react";
 import { Course } from "./courses-page";
 import { UploadFileDialog } from "./upload-file-dialog";
 import { CourseAIChatBox } from "./course-ai-chat-box";
+import { FlashcardsView } from "./flashcards-view";
+import { ExamGeneratorView } from "./exam-generator-view";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { toast } from "sonner";
@@ -24,6 +26,7 @@ interface CourseFilesViewProps {
 }
 
 type GenerateMode = "practice-questions" | "summary" | "key-concepts" | "study-guide" | "flashcards" | "explain" | null;
+type ViewMode = "chat" | "flashcards" | "exam";
 
 const GENERATE_MODES = [
   { id: "practice-questions" as const, label: "Practice Questions", icon: FileQuestion },
@@ -43,6 +46,7 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const [filesCollapsed, setFilesCollapsed] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>("chat");
 
   const handleDeleteClick = (fileId: string) => {
     setFileToDelete(fileId);
@@ -273,43 +277,86 @@ export function CourseFilesView({ course, onBack }: CourseFilesViewProps) {
                     <Upload className="h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Upload</span>
                   </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm" className="gap-1.5 text-xs h-8 px-2">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        <span className="hidden sm:inline">Generate</span>
-                        <ChevronDown className="h-3 w-3" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56">
-                      {GENERATE_MODES.map((mode) => {
-                        const Icon = mode.icon;
-                        return (
-                          <DropdownMenuItem
-                            key={mode.id}
-                            onClick={() => setGenerateMode(mode.id)}
-                            className="gap-2"
-                          >
-                            <Icon className="h-4 w-4" />
-                            {mode.label}
-                          </DropdownMenuItem>
-                        );
-                      })}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {viewMode === "chat" && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="gap-1.5 text-xs h-8 px-2">
+                          <Sparkles className="h-3.5 w-3.5" />
+                          <span className="hidden sm:inline">Generate</span>
+                          <ChevronDown className="h-3 w-3" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        {GENERATE_MODES.map((mode) => {
+                          const Icon = mode.icon;
+                          return (
+                            <DropdownMenuItem
+                              key={mode.id}
+                              onClick={() => setGenerateMode(mode.id)}
+                              className="gap-2"
+                            >
+                              <Icon className="h-4 w-4" />
+                              {mode.label}
+                            </DropdownMenuItem>
+                          );
+                        })}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
                 </>
               )}
             </div>
           </div>
 
-          {/* AI Chat Box */}
+          {/* Tabs */}
+          <div className="border-b bg-background flex-shrink-0">
+            <div className="flex gap-1 px-4">
+              <Button
+                variant={viewMode === "chat" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("chat")}
+                className="rounded-b-none"
+              >
+                <Bot className="h-4 w-4 mr-2" />
+                Chat
+              </Button>
+              <Button
+                variant={viewMode === "flashcards" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("flashcards")}
+                className="rounded-b-none"
+              >
+                <Layers className="h-4 w-4 mr-2" />
+                Flashcards
+              </Button>
+              <Button
+                variant={viewMode === "exam" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setViewMode("exam")}
+                className="rounded-b-none"
+              >
+                <GraduationCap className="h-4 w-4 mr-2" />
+                Practice Exam
+              </Button>
+            </div>
+          </div>
+
+          {/* Content Area */}
           <div className="flex-1 overflow-hidden min-h-0 flex flex-col">
-            <CourseAIChatBox
-              courseName={course.name}
-              courseId={course._id}
-              generateMode={generateMode}
-              onModeChange={setGenerateMode}
-            />
+            {viewMode === "chat" && (
+              <CourseAIChatBox
+                courseName={course.name}
+                courseId={course._id}
+                generateMode={generateMode}
+                onModeChange={setGenerateMode}
+              />
+            )}
+            {viewMode === "flashcards" && (
+              <FlashcardsView courseId={course._id} />
+            )}
+            {viewMode === "exam" && (
+              <ExamGeneratorView courseId={course._id} />
+            )}
           </div>
         </div>
       </div>

@@ -90,9 +90,11 @@ export function CourseAIChatBox({
   const courseIdRef = useRef(courseId);
   courseIdRef.current = courseId;
   
-  const customFetch = useCallback(async (url: string, options?: RequestInit) => {
+  const customFetch = useCallback(async (input: URL | RequestInfo, init?: RequestInit) => {
     // Intercept and modify the request body to include courseId and generateMode
-    if (options?.body) {
+    const options = init || {};
+    
+    if (options.body) {
       try {
         const body = JSON.parse(options.body as string);
         body.courseId = courseIdRef.current;
@@ -105,7 +107,7 @@ export function CourseAIChatBox({
     }
     
     try {
-      const response = await fetch(url, options);
+      const response = await fetch(input, options);
       
       // Check if response is ok
       if (!response.ok) {
@@ -146,25 +148,31 @@ export function CourseAIChatBox({
   // Load chat history once when data is available
   const hasInitializedRef = useRef(false);
   const isInitializingRef = useRef(false);
-  const initializedMessagesRef = useRef<string | null>(null);
+  const savedMessagesSnapshotRef = useRef<any>(null);
   
+  // Use a separate effect that runs on every render but only processes once
   useEffect(() => {
-    // Only process once when data becomes available
+    // CRITICAL: Only process ONCE when data first becomes available
+    // After initialization, completely ignore savedMessages updates (they come from our own saves)
+    if (hasInitializedRef.current) {
+      // Already initialized - do nothing, ignore all future savedMessages updates
+      return;
+    }
+    
+    // Wait for data to be available
     if (savedMessages === undefined) return;
-    if (hasInitializedRef.current) return;
-    if (isInitializingRef.current) return; // Prevent concurrent initialization
     
-    // Create a stable key to check if we've already initialized with this data
-    const messagesKey = Array.isArray(savedMessages) 
-      ? savedMessages.map(m => `${m._id}-${m.content}`).join('|')
-      : 'empty';
+    // Prevent concurrent initialization
+    if (isInitializingRef.current) return;
     
-    if (initializedMessagesRef.current === messagesKey) return;
+    // Check if this is the same data we already processed
+    if (savedMessagesSnapshotRef.current === savedMessages) return;
     
+    // Mark as processing and initialized IMMEDIATELY to prevent re-runs
     isInitializingRef.current = true;
     hasInitializedRef.current = true;
     hasLoadedRef.current = true;
-    initializedMessagesRef.current = messagesKey;
+    savedMessagesSnapshotRef.current = savedMessages;
     
     if (Array.isArray(savedMessages) && savedMessages.length > 0) {
       const formattedMessages = savedMessages.map((msg, idx) => ({
@@ -184,15 +192,24 @@ export function CourseAIChatBox({
         savedMessageIdsRef.current.add(messageKey);
       });
       
-      // Use requestAnimationFrame to defer setMessages and prevent immediate re-render loops
-      requestAnimationFrame(() => {
+      // Use setTimeout to defer setMessages and prevent immediate re-render loops
+      setTimeout(() => {
+        // Double-check we're still in initialization state
+        if (!hasInitializedRef.current || !isInitializingRef.current) {
+          isInitializingRef.current = false;
+          return;
+        }
         setMessages(formattedMessages);
+        // Update prevMessagesLengthRef to match loaded messages
+        prevMessagesLengthRef.current = formattedMessages.length;
+        lastProcessedLengthRef.current = formattedMessages.length;
         isInitializingRef.current = false;
-      });
+      }, 0);
     } else {
       isInitializingRef.current = false;
     }
-  }, [savedMessages, setMessages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedMessages]); // Keep savedMessages in deps, but early return prevents re-processing
 
   // Save new messages to Convex
   const prevMessagesLengthRef = useRef(0);
@@ -200,6 +217,9 @@ export function CourseAIChatBox({
   const messagesRef = useRef(messages);
   const lastProcessedLengthRef = useRef(0);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // CRITICAL: Track if we're in the initial load phase to prevent save loop
+  // After initialization, we ignore savedMessages updates (they come from our own saves)
   
   // Keep messages ref in sync without triggering effects
   messagesRef.current = messages;
@@ -212,8 +232,17 @@ export function CourseAIChatBox({
     if (modeSelectInProgressRef.current) return; // Don't save immediately after mode select
     
     // CRITICAL: During streaming, messages update continuously causing infinite loops
-    // Only save user messages immediately, wait for streaming to complete for assistant messages
+    // COMPLETELY DISABLE saving during streaming - we'll save everything when ready
     const isStreaming = status === "submitted" || status === "streaming";
+    
+    if (isStreaming) {
+      // During streaming, DO NOTHING - completely skip all processing
+      // This prevents infinite loops from continuous message updates
+      return;
+    }
+    
+    // Only process when status is "ready" (streaming complete)
+    if (status !== "ready") return;
     
     const currentMessages = messagesRef.current;
     const currentLength = currentMessages.length;
@@ -221,80 +250,21 @@ export function CourseAIChatBox({
     
     // Only process if there are new messages and we haven't processed this length yet
     if (currentLength <= prevLength || currentLength === lastProcessedLengthRef.current) {
-      // Update counter if status is ready (even if no new messages, in case we missed an update)
-      if (status === "ready" && prevLength < currentLength) {
-        prevMessagesLengthRef.current = currentLength;
-        lastProcessedLengthRef.current = currentLength;
-      }
       return;
     }
     
     // Get all new messages since last save
     const newMessages = currentMessages.slice(prevLength);
     
-    // CRITICAL FIX: Only save user messages during streaming
-    // Skip ALL processing during streaming to prevent infinite loops
-    // We'll save assistant messages when status becomes "ready"
-    if (isStreaming) {
-      // During streaming, only save user messages (which are complete)
-      const userMessages = newMessages.filter(msg => msg.role === "user");
-      
-      if (userMessages.length === 0) {
-        // No user messages to save, skip entirely during streaming
-        // Don't update lastProcessedLengthRef to allow processing when ready
-        return;
-      }
-      
-      // Only process user messages during streaming
-      const saveUserMessages = async () => {
-        if (isSavingRef.current) return;
-        isSavingRef.current = true;
-        
-        try {
-          for (const message of userMessages) {
-            const lastPart = message.parts[message.parts.length - 1];
-            
-            if (lastPart?.type === "text" && message.role === "user") {
-              const messageKey = `user-${lastPart.text}`;
-              
-              if (!savedMessageIdsRef.current.has(messageKey)) {
-                savedMessageIdsRef.current.add(messageKey);
-                
-                try {
-                  await saveChatMessage({
-                    courseId,
-                    role: "user",
-                    content: lastPart.text,
-                  });
-                } catch (error) {
-                  console.error("Failed to save message:", error);
-                }
-              }
-            }
-          }
-          
-          // Update counter for user messages only
-          prevMessagesLengthRef.current += userMessages.length;
-          lastProcessedLengthRef.current = currentLength;
-        } finally {
-          isSavingRef.current = false;
-        }
-      };
-      
-      saveUserMessages();
-      return; // Exit early - don't process assistant messages during streaming
+    if (newMessages.length === 0) {
+      lastProcessedLengthRef.current = currentLength;
+      return;
     }
     
-    // When NOT streaming (status is "ready"), process all new messages
-    // Clear any pending save timeout
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = null;
-    }
-    
-    // Mark this length as being processed
+    // Mark this length as being processed immediately
     lastProcessedLengthRef.current = currentLength;
     
+    // Save all new messages when streaming is complete
     const saveAllMessages = async () => {
       if (isSavingRef.current) return;
       isSavingRef.current = true;
@@ -439,7 +409,7 @@ export function CourseAIChatBox({
             </div>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-5">
             {messages.map((msg) => {
               const currentStep = msg.parts[msg.parts.length - 1];
               
@@ -448,29 +418,31 @@ export function CourseAIChatBox({
                   key={msg.id}
                   className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-2`}
                 >
-                  <div className="flex gap-3 max-w-[80%]">
+                  <div className="flex gap-3 max-w-[85%] sm:max-w-[80%]">
                     {msg.role === "assistant" && (
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 self-start mt-1">
                         <Bot className="h-4 w-4 text-primary" />
                       </div>
                     )}
                     <div
-                      className={`rounded-2xl p-4 ${
+                      className={`rounded-2xl break-words ${
                         msg.role === "user"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted"
+                          ? "bg-primary text-primary-foreground px-5 py-4 shadow-sm"
+                          : "bg-muted/80 backdrop-blur-sm px-7 py-6 shadow-sm border border-border/30"
                       }`}
                     >
                       {currentStep?.type === "text" && (
                         msg.role === "assistant" ? (
-                          <Markdown>{currentStep.text}</Markdown>
+                          <div className="text-foreground break-words">
+                            <Markdown>{currentStep.text}</Markdown>
+                          </div>
                         ) : (
-                          <p className="text-sm whitespace-pre-wrap leading-relaxed">{currentStep.text}</p>
+                          <p className="text-sm sm:text-base whitespace-pre-wrap leading-7 break-words">{currentStep.text}</p>
                         )
                       )}
                     </div>
                     {msg.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 self-start mt-1">
                         <span className="text-xs font-semibold text-primary">U</span>
                       </div>
                     )}
@@ -480,12 +452,12 @@ export function CourseAIChatBox({
             })}
             {status === "submitted" && lastMessageIsUser && (
               <div className="flex justify-start">
-                <div className="flex gap-3 max-w-[80%]">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="flex gap-3 max-w-[85%] sm:max-w-[80%]">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 self-start mt-1">
                     <Bot className="h-4 w-4 text-primary animate-pulse" />
                   </div>
-                  <div className="rounded-2xl p-4 bg-muted">
-                    <div className="flex gap-1">
+                  <div className="rounded-2xl px-6 py-5 bg-muted/80 backdrop-blur-sm shadow-sm border border-border/30">
+                    <div className="flex gap-1.5">
                       <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
                       <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
                       <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
