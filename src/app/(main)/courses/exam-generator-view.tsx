@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { FileQuestion, Loader2, Download, CheckCircle, XCircle, Clock, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Markdown from "@/components/markdown";
 
 interface ExamGeneratorViewProps {
   courseId: Id<"courses">;
@@ -340,12 +341,16 @@ function QuizViewer({
                     </span>
                   </div>
                 </div>
-                <p className="mb-4 text-base">{q.question}</p>
+                <div className="mb-4 text-base">
+                  <Markdown>{q.question}</Markdown>
+                </div>
                 
                 {q.type === "multiple_choice" && q.options && (
                   <ol className="list-[upper-alpha] list-inside space-y-2 mb-4 ml-4">
                     {q.options.map((opt, optIdx) => (
-                      <li key={optIdx} className="text-sm">{opt}</li>
+                      <li key={optIdx} className="text-sm">
+                        <Markdown>{opt}</Markdown>
+                      </li>
                     ))}
                   </ol>
                 )}
@@ -353,11 +358,15 @@ function QuizViewer({
                 {showAnswers && (
                   <div className="mt-4 p-3 bg-muted rounded-lg border-l-4 border-primary">
                     <p className="font-semibold text-sm mb-1">Answer:</p>
-                    <p className="text-sm mb-2">{q.correctAnswer}</p>
+                    <div className="text-sm mb-2">
+                      <Markdown>{q.correctAnswer}</Markdown>
+                    </div>
                     {q.explanation && (
                       <>
                         <p className="font-semibold text-sm mb-1">Explanation:</p>
-                        <p className="text-sm text-muted-foreground">{q.explanation}</p>
+                        <div className="text-sm text-muted-foreground">
+                          <Markdown>{q.explanation}</Markdown>
+                        </div>
                       </>
                     )}
                   </div>

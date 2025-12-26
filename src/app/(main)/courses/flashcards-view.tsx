@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Sparkles, RotateCw, Trash2, Check, X, Plus, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Markdown from "@/components/markdown";
 import {
   Dialog,
   DialogContent,
@@ -74,14 +75,19 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
     : 0;
   const currentFlashcard = validFlashcards.length > 0 ? validFlashcards[safeIndex] : null;
   
-  // Update index if it's out of bounds
+  // Update index if it's out of bounds (only when validFlashcards.length changes)
   useEffect(() => {
-    if (validFlashcards.length > 0 && currentIndex >= validFlashcards.length) {
-      setCurrentIndex(Math.max(0, validFlashcards.length - 1));
-    } else if (validFlashcards.length > 0 && currentIndex < 0) {
+    if (validFlashcards.length > 0) {
+      if (currentIndex >= validFlashcards.length) {
+        setCurrentIndex(Math.max(0, validFlashcards.length - 1));
+      } else if (currentIndex < 0) {
+        setCurrentIndex(0);
+      }
+    } else {
       setCurrentIndex(0);
     }
-  }, [validFlashcards.length, currentIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [validFlashcards.length]); // Only depend on length, not currentIndex to avoid infinite loop
 
   const handleGenerate = async () => {
     if (!topic.trim() && count < 1) {
@@ -478,8 +484,10 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
                   <Trash2 className="h-4 w-4 text-destructive" />
                 </Button>
               </div>
-              <div className="flex-1 flex items-center justify-center px-4">
-                <p className="text-xl font-medium text-center leading-relaxed">{currentFlashcard?.question}</p>
+              <div className="flex-1 flex items-center justify-center px-4 overflow-y-auto">
+                <div className="text-xl font-medium text-center leading-relaxed">
+                  <Markdown>{currentFlashcard?.question || ""}</Markdown>
+                </div>
               </div>
               <div className="text-center text-sm text-muted-foreground mt-6">
                 Click to reveal answer
@@ -501,8 +509,10 @@ export function FlashcardsView({ courseId }: FlashcardsViewProps) {
                   <RotateCw className="h-4 w-4" />
                 </Button>
               </div>
-              <div className="flex-1 flex items-center justify-center px-4">
-                <p className="text-lg text-center leading-relaxed">{currentFlashcard?.answer}</p>
+              <div className="flex-1 flex items-center justify-center px-4 overflow-y-auto">
+                <div className="text-lg text-center leading-relaxed">
+                  <Markdown>{currentFlashcard?.answer || ""}</Markdown>
+                </div>
               </div>
               <div className="flex gap-4 justify-center pt-4 mt-4">
                 <Button

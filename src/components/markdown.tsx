@@ -1,5 +1,9 @@
 import Link from "next/link";
+import React from "react";
 import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 
 interface MarkdownProps {
   children: string;
@@ -8,6 +12,32 @@ interface MarkdownProps {
 // Aggressive text formatter to break up dense blocks
 function formatTextAggressively(text: string): string {
   let formatted = text;
+  
+  // Step 0: Protect math equations from being modified
+  const mathBlocks: string[] = [];
+  const mathPlaceholders: string[] = [];
+  
+  // Extract block math ($$...$$)
+  formatted = formatted.replace(/\$\$[\s\S]*?\$\$/g, (match) => {
+    const placeholder = `__MATH_BLOCK_${mathBlocks.length}__`;
+    mathBlocks.push(match);
+    mathPlaceholders.push(placeholder);
+    return placeholder;
+  });
+  
+  // Extract inline math ($...$) - be careful not to match currency
+  // Look for $...$ patterns that contain math operators or symbols
+  formatted = formatted.replace(/\$([^$\n]+?)\$/g, (match, content) => {
+    // Only treat as math if it contains math-like content (operators, Greek letters, etc.)
+    const mathIndicators = /[+\-*/=^_()\[\]{}|\\]|\\[a-zA-Z]|[\u03B1-\u03FF]|\d/;
+    if (mathIndicators.test(content)) {
+      const placeholder = `__MATH_INLINE_${mathBlocks.length}__`;
+      mathBlocks.push(match);
+      mathPlaceholders.push(placeholder);
+      return placeholder;
+    }
+    return match; // Keep as-is if it doesn't look like math
+  });
   
   // Step 1: Convert numbered sections to headings (e.g., "1. Title" -> "## Title")
   formatted = formatted.replace(/^(\d+)\.\s+([A-Z][^\n]{10,100})$/gm, '## $2');
@@ -102,6 +132,11 @@ function formatTextAggressively(text: string): string {
   formatted = formatted.replace(/([^\n])\n```/g, '$1\n\n```');
   formatted = formatted.replace(/```\n([^\n])/g, '```\n\n$1');
   
+  // Step 8: Restore math equations
+  mathPlaceholders.forEach((placeholder, index) => {
+    formatted = formatted.replace(placeholder, mathBlocks[index]);
+  });
+  
   return formatted;
 }
 
@@ -114,6 +149,8 @@ export default function Markdown({ children }: MarkdownProps) {
   return (
     <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:scroll-mt-4 break-words space-y-2">
       <ReactMarkdown
+        remarkPlugins={[remarkMath]}
+        rehypePlugins={[rehypeKatex]}
         components={{
           // Paragraphs with MUCH more spacing for readability
           p: ({ children }) => {
@@ -166,7 +203,16 @@ export default function Markdown({ children }: MarkdownProps) {
             </li>
           ),
           // Enhanced code blocks with better styling
-          code: ({ className, children, ...props }) => {
+          // But don't override math elements (KaTeX renders math with specific classes)
+          code: ({ className, children, ...props }: any) => {
+            // Check if this is a math element (KaTeX adds 'math' or 'math-inline' classes)
+            const isMath = className?.includes('math') || className?.includes('katex');
+            
+            if (isMath) {
+              // Let KaTeX handle math rendering - don't apply custom styles
+              return <code className={className} {...props}>{children}</code>;
+            }
+            
             const isInline = !className;
             return isInline ? (
               <code
@@ -184,11 +230,22 @@ export default function Markdown({ children }: MarkdownProps) {
               </code>
             );
           },
-          pre: ({ children }) => (
-            <pre className="mb-5 overflow-x-auto rounded-lg bg-muted/60 p-4 border border-border/50 shadow-sm">
-              {children}
-            </pre>
-          ),
+          pre: ({ children, ...props }: any) => {
+            // Check if this is a math block (KaTeX uses divs, but check just in case)
+            const child = React.Children.only(children) as any;
+            const isMath = child?.props?.className?.includes('math') || child?.props?.className?.includes('katex');
+            
+            if (isMath) {
+              // Let KaTeX handle math rendering
+              return <pre {...props}>{children}</pre>;
+            }
+            
+            return (
+              <pre className="mb-5 overflow-x-auto rounded-lg bg-muted/60 p-4 border border-border/50 shadow-sm" {...props}>
+                {children}
+              </pre>
+            );
+          },
           // Enhanced blockquotes with better visual distinction
           blockquote: ({ children }) => (
             <blockquote className="border-l-4 border-primary/60 pl-5 py-2 my-5 italic text-foreground/80 bg-muted/30 rounded-r-lg">

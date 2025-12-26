@@ -121,6 +121,9 @@ Each flashcard should:
 - Include detailed answers that explain the concept
 - Cover different topics from the materials
 - Be suitable for spaced repetition learning
+- IMPORTANT: For any mathematical formulas, equations, or expressions, use LaTeX format:
+  * Inline math: wrap with single dollar signs like $x^2 + y^2 = z^2$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
 
 Course Materials:
 ${contextContent}

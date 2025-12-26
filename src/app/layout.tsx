@@ -3,6 +3,7 @@ import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ConvexClientProvider } from "./convex-client-provider";
+import { DisableErrorOverlay } from "@/components/disable-error-overlay";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,6 +29,7 @@ export default function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang="en" suppressHydrationWarning>
         <body className={`${geistSans.className} antialiased`}>
+          <DisableErrorOverlay />
           <ConvexClientProvider>{children}</ConvexClientProvider>
           <Toaster position="bottom-right" />
         </body>

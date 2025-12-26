@@ -79,7 +79,7 @@ export const generatePracticeExam = action({
         .map((r: { fileName: string; content: string }) => `[Source: ${r.fileName}]\n${r.content}`)
         .join("\n\n---\n\n");
 
-      // Analyze the content
+      // Analyze the content and detect exam questions
       const { text: analysis } = await generateText({
         model: openai("gpt-4o-mini"),
         prompt: `Analyze the following course materials and provide a comprehensive summary of:
@@ -87,11 +87,52 @@ export const generatePracticeExam = action({
 2. Key concepts and definitions
 3. Important relationships between concepts
 4. Areas that would be tested in an exam
+5. Any existing exam questions, practice problems, or sample questions found in the materials
 
 Course Materials:
 ${courseContent}
 
 Provide a detailed analysis that will be used to generate exam questions.`,
+      });
+
+      // Detect and extract exam questions from the content
+      const { object: examQuestionsData } = await generateObject({
+        model: openai("gpt-4o-mini"),
+        schema: z.object({
+          foundQuestions: z
+            .array(
+              z.object({
+                question: z.string().describe("The exam question found in the materials"),
+                type: z
+                  .enum(["multiple_choice", "short_answer", "essay", "problem_solving"])
+                  .describe("Type of question"),
+                topic: z.string().describe("Topic or concept this question tests"),
+                difficulty: z
+                  .enum(["easy", "medium", "hard"])
+                  .describe("Perceived difficulty level - infer based on question complexity"),
+              })
+            )
+            .describe("List of exam questions found in the uploaded materials"),
+          questionPatterns: z
+            .string()
+            .describe(
+              "Summary of patterns, formats, and styles observed in the found exam questions"
+            ),
+        }),
+        prompt: `Carefully examine the following course materials and identify ALL exam questions, practice problems, sample questions, or similar assessment items.
+
+Look for:
+- Questions with numbers (e.g., "1.", "Question 1:", "Problem 1")
+- Multiple choice questions (with options A, B, C, D or numbered options)
+- Short answer questions
+- Problem-solving questions (especially in math, science, or technical subjects)
+- Questions from past exams, practice tests, or study guides
+- End-of-chapter questions or review questions
+
+Course Materials:
+${courseContent}
+
+Extract all exam questions you find and identify patterns in their format, style, and content.`,
       });
 
       await ctx.runMutation(internal.examGenerator.updateWorkflowAnalysis, {
@@ -137,16 +178,136 @@ Provide a list of key topics.`,
       const mediumCount = difficulty === "medium" ? questionCount : difficulty === "easy" || difficulty === "hard" ? 0 : Math.floor(questionCount * 0.5);
       const hardCount = difficulty === "hard" ? questionCount : difficulty === "easy" ? 0 : questionCount - easyCount - mediumCount;
 
+      // Determine how many questions should be similar to found exam questions
+      const foundQuestionsCount = examQuestionsData.foundQuestions.length;
+      const similarQuestionsCount = foundQuestionsCount > 0 ? Math.min(Math.floor(questionCount * 0.4), foundQuestionsCount * 2) : 0;
+      const regularQuestionsCount = questionCount - similarQuestionsCount;
+
       // Generate questions in batches
       const allQuestions: z.infer<typeof QuestionSchema>[] = [];
 
-      if (easyCount > 0) {
+      // First, generate questions similar to found exam questions if any were detected
+      if (similarQuestionsCount > 0 && foundQuestionsCount > 0) {
+        const similarEasyCount = difficulty === "easy" ? similarQuestionsCount : difficulty === "hard" ? 0 : Math.floor(similarQuestionsCount * 0.3);
+        const similarMediumCount = difficulty === "medium" ? similarQuestionsCount : difficulty === "easy" || difficulty === "hard" ? 0 : Math.floor(similarQuestionsCount * 0.5);
+        const similarHardCount = difficulty === "hard" ? similarQuestionsCount : difficulty === "easy" ? 0 : similarQuestionsCount - similarEasyCount - similarMediumCount;
+
+        const foundQuestionsText = examQuestionsData.foundQuestions
+          .map((q, idx) => `${idx + 1}. [${q.type}] ${q.question} (Topic: ${q.topic})`)
+          .join("\n");
+
+        if (similarEasyCount > 0) {
+          const { object: similarEasyQuestions } = await generateObject({
+            model: openai("gpt-4o-mini"),
+            schema: z.object({
+              questions: z.array(QuestionSchema),
+            }),
+            prompt: `Generate EXACTLY ${similarEasyCount} EASY difficulty exam questions (no more, no less) that are SIMILAR IN STYLE AND FORMAT to the exam questions found in the uploaded materials.
+
+Found Exam Questions:
+${foundQuestionsText}
+
+Question Patterns Observed:
+${examQuestionsData.questionPatterns}
+
+Course Materials:
+${courseContent}
+
+Requirements:
+- Create questions that match the style, format, and approach of the found exam questions
+- Use similar question structures, wording patterns, and difficulty levels
+- Test the same topics and concepts as the found questions, but with different specific content
+- Mix of multiple choice and short answer questions (approximately 60% multiple choice, 40% short answer)
+- Include clear explanations for answers
+- Make questions EASY difficulty (basic understanding and recall)
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
+          });
+          allQuestions.push(...similarEasyQuestions.questions);
+        }
+
+        if (similarMediumCount > 0) {
+          const { object: similarMediumQuestions } = await generateObject({
+            model: openai("gpt-4o-mini"),
+            schema: z.object({
+              questions: z.array(QuestionSchema),
+            }),
+            prompt: `Generate EXACTLY ${similarMediumCount} MEDIUM difficulty exam questions (no more, no less) that are SIMILAR IN STYLE AND FORMAT to the exam questions found in the uploaded materials.
+
+Found Exam Questions:
+${foundQuestionsText}
+
+Question Patterns Observed:
+${examQuestionsData.questionPatterns}
+
+Course Materials:
+${courseContent}
+
+Requirements:
+- Create questions that match the style, format, and approach of the found exam questions
+- Use similar question structures, wording patterns, and difficulty levels
+- Test the same topics and concepts as the found questions, but with different specific content
+- Mix of multiple choice and short answer questions (approximately 60% multiple choice, 40% short answer)
+- Include clear explanations for answers
+- Make questions MEDIUM difficulty (application and analysis)
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
+          });
+          allQuestions.push(...similarMediumQuestions.questions);
+        }
+
+        if (similarHardCount > 0) {
+          const { object: similarHardQuestions } = await generateObject({
+            model: openai("gpt-4o-mini"),
+            schema: z.object({
+              questions: z.array(QuestionSchema),
+            }),
+            prompt: `Generate EXACTLY ${similarHardCount} HARD difficulty exam questions (no more, no less) that are SIMILAR IN STYLE AND FORMAT to the exam questions found in the uploaded materials.
+
+Found Exam Questions:
+${foundQuestionsText}
+
+Question Patterns Observed:
+${examQuestionsData.questionPatterns}
+
+Course Materials:
+${courseContent}
+
+Requirements:
+- Create questions that match the style, format, and approach of the found exam questions
+- Use similar question structures, wording patterns, and difficulty levels
+- Test the same topics and concepts as the found questions, but with different specific content
+- Mix of multiple choice and short answer questions (approximately 50% multiple choice, 50% short answer)
+- Include detailed explanations for answers
+- Make questions HARD difficulty (synthesis, evaluation, and critical thinking)
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
+          });
+          allQuestions.push(...similarHardQuestions.questions);
+        }
+      }
+
+      // Then generate regular questions based on course content
+      const regularEasyCount = Math.max(0, easyCount - (similarQuestionsCount > 0 && foundQuestionsCount > 0 ? Math.floor(similarQuestionsCount * 0.3) : 0));
+      const regularMediumCount = Math.max(0, mediumCount - (similarQuestionsCount > 0 && foundQuestionsCount > 0 ? Math.floor(similarQuestionsCount * 0.5) : 0));
+      const regularHardCount = Math.max(0, hardCount - (similarQuestionsCount > 0 && foundQuestionsCount > 0 ? (similarQuestionsCount - Math.floor(similarQuestionsCount * 0.3) - Math.floor(similarQuestionsCount * 0.5)) : 0));
+
+      if (regularEasyCount > 0) {
         const { object: easyQuestions } = await generateObject({
           model: openai("gpt-4o-mini"),
           schema: z.object({
             questions: z.array(QuestionSchema),
           }),
-          prompt: `Generate ${easyCount} EASY difficulty exam questions based on the course materials.
+          prompt: `Generate EXACTLY ${regularEasyCount} EASY difficulty exam questions (no more, no less) based on the course materials.
 
 Topics to cover: ${topicsData.topics.join(", ")}
 
@@ -157,18 +318,23 @@ Requirements:
 - Mix of multiple choice and short answer questions (approximately 60% multiple choice, 40% short answer)
 - Questions should test basic understanding and recall
 - Include clear explanations for answers
-- Base all questions on the provided course materials`,
+- Base all questions on the provided course materials
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
         });
         allQuestions.push(...easyQuestions.questions);
       }
 
-      if (mediumCount > 0) {
+      if (regularMediumCount > 0) {
         const { object: mediumQuestions } = await generateObject({
           model: openai("gpt-4o-mini"),
           schema: z.object({
             questions: z.array(QuestionSchema),
           }),
-          prompt: `Generate ${mediumCount} MEDIUM difficulty exam questions based on the course materials.
+          prompt: `Generate EXACTLY ${regularMediumCount} MEDIUM difficulty exam questions (no more, no less) based on the course materials.
 
 Topics to cover: ${topicsData.topics.join(", ")}
 
@@ -179,18 +345,23 @@ Requirements:
 - Mix of multiple choice and short answer questions (approximately 60% multiple choice, 40% short answer)
 - Questions should test application and analysis
 - Include clear explanations for answers
-- Base all questions on the provided course materials`,
+- Base all questions on the provided course materials
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
         });
         allQuestions.push(...mediumQuestions.questions);
       }
 
-      if (hardCount > 0) {
+      if (regularHardCount > 0) {
         const { object: hardQuestions } = await generateObject({
           model: openai("gpt-4o-mini"),
           schema: z.object({
             questions: z.array(QuestionSchema),
           }),
-          prompt: `Generate ${hardCount} HARD difficulty exam questions based on the course materials.
+          prompt: `Generate EXACTLY ${regularHardCount} HARD difficulty exam questions (no more, no less) based on the course materials.
 
 Topics to cover: ${topicsData.topics.join(", ")}
 
@@ -201,18 +372,26 @@ Requirements:
 - Mix of multiple choice and short answer questions (approximately 50% multiple choice, 50% short answer)
 - Questions should test synthesis, evaluation, and critical thinking
 - Include detailed explanations for answers
-- Base all questions on the provided course materials`,
+- Base all questions on the provided course materials
+- CRITICAL: For ANY mathematical formulas, equations, expressions, variables with subscripts, or mathematical notation, you MUST use LaTeX format with dollar signs:
+  * Inline math: ALWAYS wrap with single dollar signs like $x^2 + y^2 = z^2$ or $X_1 = 2, X_2 = 4$
+  * Block math: wrap with double dollar signs like $$\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}$$
+  * NEVER use parentheses like (X_1 = 2) - ALWAYS use $X_1 = 2$ instead
+  * Variables with subscripts like X_1, theta_1, etc. MUST be wrapped in dollar signs: $X_1$, $\\theta_1$`,
         });
         allQuestions.push(...hardQuestions.questions);
       }
 
-      // Shuffle questions
+      // Shuffle questions and ensure we have exactly the requested count
       const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+      
+      // Trim to exact question count (in case AI generated extra questions)
+      const finalQuestions = shuffledQuestions.slice(0, questionCount);
 
       // Step 5: Save questions and complete workflow
       await ctx.runMutation(internal.examGenerator.updateWorkflowQuestions, {
         workflowId,
-        questions: shuffledQuestions.map((q) => {
+        questions: finalQuestions.map((q) => {
           if (q.type === "multiple_choice") {
             return {
               question: q.question,
@@ -416,6 +595,7 @@ export const exportExamAsPDF = action({
 <head>
   <meta charset="UTF-8">
   <title>Practice Exam</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
   <style>
     body {
       font-family: Arial, sans-serif;

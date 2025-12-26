@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     // your project has type errors.
     ignoreBuildErrors: true,
   },
+  // Disable dev indicators for clean screen recording
+  devIndicators: {
+    buildActivity: false,
+    buildActivityPosition: undefined,
+  },
 };
 
 export default nextConfig;
