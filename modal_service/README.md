@@ -62,3 +62,5 @@ Upserts vectors to Pinecone index.
 Deletes all vectors for a file from Pinecone.
 
 
+
+
